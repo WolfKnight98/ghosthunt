@@ -1,0 +1,11 @@
+"ghosthunt"
+{
+	"base"		"base"
+	"title"		"Ghost Hunt"
+	"maps"		"^gh_"
+	"menusystem"	"1"
+	"settings"
+	{
+
+	}
+}
