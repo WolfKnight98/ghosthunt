@@ -1,16 +1,16 @@
 /*---------------------------------------------------------------------------
     
     Ghost Hunt
-    Made By: DJH4698
+    Made By: WolfKnight
     shared.lua
     
 ---------------------------------------------------------------------------*/
 
 GM.Name = "Ghost Hunt"
-GM.Author = "DJH4698"
+GM.Author = "WolfKnight"
 GM.Email = "N/A"
 GM.Website = "N/A"
-GM.Version = "0.02b"
+GM.Version = "0.03"
 
 DeriveGamemode( "base" )
 
@@ -31,8 +31,7 @@ ghmodels = {
     model11 = "models/player/Group01/Female_02.mdl",
     model12 = "models/player/Group01/Female_03.mdl",
     model13 = "models/player/Group01/Female_04.mdl",
-    model14 = "models/player/Group01/Female_06.mdl",
-    model15 = "models/player/Group01/Female_07.mdl"
+    model14 = "models/player/Group01/Female_06.mdl"
 }
 
 function GM:OnPlayerChat( ply, text, teamchat, dead )

@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------
     
     Ghost Hunt
-    Made By: DJH4698
+    Made By: WolfKnight
     init.lua
     
 ---------------------------------------------------------------------------*/
@@ -17,6 +17,7 @@ include( "resource.lua" )
 CreateConVar( "gh_flashlight", "1", 256, "Toggles player's flashlight on or off.\n      0 = off, 1 = on" )
 CreateConVar( "gh_walkspeed", "120", 256, "Set the player's walkspeed." )
 CreateConVar( "gh_runspeed", "210", 256, "Set the player's runspeed." )
+CreateConVar( "gh_pvpdamage", "1", 256, "Allow player vs player damage.\n      0 = no, 1 = yes" )
 
 cvars.AddChangeCallback( "gh_flashlight", function( convar_name, value_old, value_new ) 
     for k, v in pairs( player.GetAll() ) do
@@ -33,6 +34,11 @@ cvars.AddChangeCallback( "gh_runspeed", function( convar_name, value_old, value_
     for k, v in pairs( player.GetAll() ) do
         v:SetRunSpeed( value_new )
 end end )
+
+cvars.AddChangeCallback( "gh_pvpdamage", function( convar_name, value_old, value_new )
+	if ( tonumber(value_new, 10) > 1 ) then GetConVar( "gh_pvpdamage" ):SetBool( true ) end 
+	if ( tonumber(value_new, 10) < 0 ) then GetConVar( "gh_pvpdamage" ):SetBool( false ) end 
+end )
 
 
 local function PlayerSpeed( ply )
@@ -100,6 +106,20 @@ function GM:PlayerSetHandsModel( ply, ent )
 
 end
 
+
+function GM:PlayerShouldTakeDamage( ply, attacker )
+		
+	-- Always allow damage in singleplayer
+	if ( game.SinglePlayer() ) then return true end 
+	
+	-- Not allow player vs player damage
+	if ( ply:IsPlayer() and attacker:IsPlayer() ) then 
+		return GetConVar( "gh_pvpdamage" ):GetBool()
+	end 
+	
+	-- Always allow damage to be taken
+	return true
+end 
 
 hook.Add( "PlayerNoClip", "DisableNoclip", function( ply ) 
     return ply:IsAdmin() 
