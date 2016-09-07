@@ -31,7 +31,7 @@ function HUDPaint()
     local HP = math.Clamp( LocalPlayer():Health(), 0, 100 )
     local WEAPON_NAME = LocalPlayer():GetActiveWeapon():GetPrintName()
     local MAT_VIGNETTE = Material( "overlays/vignette01" )
-    local color_flash = math.abs( math.sin( CurTime() ) ) 
+	local glow = 55 + 200 * ( math.abs( math.sin( CurTime() * 1.5 ) ) )
 
     -- Draw the vignette effect, make's it more spoo-o-oooo-ky
     surface.SetMaterial( MAT_VIGNETTE )
@@ -48,11 +48,11 @@ function HUDPaint()
     
     -- Draw the health bar with it's back
     draw.RoundedBox( 4, 40, ( ScrH() - ScrH() ) + 28, 230, 18, Color( 20, 20, 20, 255 ) )
-    draw.RoundedBox( 4, 40, ( ScrH() - ScrH() ) + 28, HP * 2.3, 18, Color( ( color_flash * 255 ) * 2, 0, 0, 255 ) )
+    draw.RoundedBox( 4, 40, ( ScrH() - ScrH() ) + 28, HP * 2.3, 18, Color( 255, 0, 0, glow ) )
 
     -- Draw the player's name and team
-    draw.WordBox( 8, 40, ( ScrH() - ScrH() ) + 65, ply:Nick(), "GH_HudLabel", Color( 255, 255, 255, 0 ), Color( 255, 255, 255, 255 ) )
-    draw.SimpleText( "Ghost Hunter", "GH_HudLabel", 95, ( ScrH() - ScrH() ) + 107, Color( 255, 255, 255, 255 ), 1, 1 )
+    draw.WordBox( 8, 32, ( ScrH() - ScrH() ) + 65, ply:Nick(), "GH_HudLabel", Color( 255, 255, 255, 0 ), Color( 255, 255, 255, 255 ) )
+    draw.SimpleText( "Ghost Hunter", "GH_HudLabel", 87, ( ScrH() - ScrH() ) + 107, Color( 255, 255, 255, 255 ), 1, 1 )
 
 end
 hook.Add( "HUDPaint", "Paint", HUDPaint )
