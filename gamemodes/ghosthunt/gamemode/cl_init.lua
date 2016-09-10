@@ -7,11 +7,11 @@
 ---------------------------------------------------------------------------*/
 
 include( "shared.lua" )
+include( "sh_stamina.lua" )
 
 function GM:Initialize()
     surface.CreateFont( "GH_HudLabel", { font = "Coolvetica", size = 20, weight = 0, antialias = true, shadow = false } )
 end
-
 
 function GM:HUDShouldDraw( name )
     if ( name == "CHudHealth" or name == "CHudBattery" or name == "CHudAmmo" or name == "CHudSecondaryAmmo" or name == "CHudCrosshair" ) then
@@ -20,9 +20,7 @@ function GM:HUDShouldDraw( name )
     return true
 end
 
-
 function HUDPaint()
-
     if !( LocalPlayer() and LocalPlayer():Alive() ) then return end
     if !( LocalPlayer():GetActiveWeapon() and IsValid( LocalPlayer():GetActiveWeapon() ) ) then return end
 
@@ -57,14 +55,15 @@ function HUDPaint()
 end
 hook.Add( "HUDPaint", "Paint", HUDPaint )
 
-
 function GM:PostDrawViewModel( vm, ply, weapon )
-
     if ( weapon.UseHands || !weapon:IsScripted() ) then
-
         local hands = LocalPlayer():GetHands()
         if ( IsValid( hands ) ) then hands:DrawModel() end
-
     end
-
 end
+
+hook.Add( "Think", "ManageSprint", function 
+	if ( GetConVar( "gh_stamina" ) == 1 ) then 
+		LocalPlayer():CalcSprint()
+	end
+end )
