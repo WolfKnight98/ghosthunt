@@ -10,12 +10,14 @@ GM.Name = "Ghost Hunt"
 GM.Author = "WolfKnight"
 GM.Email = "N/A"
 GM.Website = "N/A"
-GM.Version = "0.03"
+GM.Version = "0.04"
 
 DeriveGamemode( "base" )
 
 TEAM_HUNTERS = 1
 team.SetUp( TEAM_HUNTERS, "Hunters", Color( 255, 255, 255, 255 ) )
+
+PLAYER = FindMetaTable( "Player" )
 
 ghmodels = {
     model1 = "models/player/Group01/male_01.mdl",
@@ -42,12 +44,12 @@ function GM:OnPlayerChat( ply, text, teamchat, dead )
     
     if dead then
         table.insert( tab, Color( 255, 0, 0, 190 ) )
-        table.insert( tab, "[ DEAD ] " )
+        table.insert( tab, "[DEAD] " )
     end
     
     if teamchat then 
         table.insert( tab, Color( 255, 0, 0, 190 ) )
-        table.insert( tab, "[ HUNTERS ] " )
+        table.insert( tab, "[HUNTERS] " )
     end
     
     if ( IsValid( ply ) ) then
@@ -57,7 +59,7 @@ function GM:OnPlayerChat( ply, text, teamchat, dead )
         table.insert( tab, "Console" )
     end
     
-    table.insert( tab, Color( 255, 0, 0, 190 ) )
+    table.insert( tab, Color( 255, 255, 255, 190 ) )
     table.insert( tab, ": " .. text )
     
     chat.AddText( unpack( tab ) )

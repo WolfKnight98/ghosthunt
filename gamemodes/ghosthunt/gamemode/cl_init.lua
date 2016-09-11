@@ -7,12 +7,17 @@
 ---------------------------------------------------------------------------*/
 
 include( "shared.lua" )
-include( "sh_stamina.lua" )
 
+--
+-- make fonts n shit 
+-- 
 function GM:Initialize()
     surface.CreateFont( "GH_HudLabel", { font = "Coolvetica", size = 20, weight = 0, antialias = true, shadow = false } )
 end
 
+--
+-- Decides what should be drawn from the original hud 
+--
 function GM:HUDShouldDraw( name )
     if ( name == "CHudHealth" or name == "CHudBattery" or name == "CHudAmmo" or name == "CHudSecondaryAmmo" or name == "CHudCrosshair" ) then
         return false
@@ -20,20 +25,22 @@ function GM:HUDShouldDraw( name )
     return true
 end
 
-function HUDPaint()
+-- 
+-- The main HUD method 
+--
+function GM:HUDPaint()
     if !( LocalPlayer() and LocalPlayer():Alive() ) then return end
     if !( LocalPlayer():GetActiveWeapon() and IsValid( LocalPlayer():GetActiveWeapon() ) ) then return end
 
     -- Define the local variables used for the hud
-    local ply = LocalPlayer()
-    local HP = math.Clamp( LocalPlayer():Health(), 0, 100 )
+    local HP = math.Clamp( LocalPlayer():Health(), 0, 200 )
     local WEAPON_NAME = LocalPlayer():GetActiveWeapon():GetPrintName()
     local MAT_VIGNETTE = Material( "overlays/vignette01" )
 	local glow = 55 + 200 * ( math.abs( math.sin( CurTime() * 1.5 ) ) )
 
     -- Draw the vignette effect, make's it more spoo-o-oooo-ky
     surface.SetMaterial( MAT_VIGNETTE )
-    surface.SetDrawColor( 255, 255, 255, 150 )
+    surface.SetDrawColor( 255, 255, 255, 120 )
     surface.DrawTexturedRect( 0, 0, ScrW(), ScrH() )
 
     if WEAPON_NAME == "#GMOD_Camera" then return end
@@ -46,24 +53,25 @@ function HUDPaint()
     
     -- Draw the health bar with it's back
     draw.RoundedBox( 4, 40, ( ScrH() - ScrH() ) + 28, 230, 18, Color( 20, 20, 20, 255 ) )
-    draw.RoundedBox( 4, 40, ( ScrH() - ScrH() ) + 28, HP * 2.3, 18, Color( 255, 0, 0, glow ) )
+    draw.RoundedBox( 4, 40, ( ScrH() - ScrH() ) + 28, HP * 1.15, 18, Color( 255, 0, 0, 255 ) )
+	
+	if ( LocalPlayer():GetNWInt( "stamina" ) ) then 
+		-- Draw the stamina bar with it's background 
+		draw.RoundedBox( 4, 40, ( ScrH() - ScrH() ) + 50, 230, 9, Color( 20, 20, 20, 255 ) )
+		draw.RoundedBox( 4, 40, ( ScrH() - ScrH() ) + 50, LocalPlayer():GetNWInt( "stamina" ) * 2.3, 9, Color( 120, 240, 60, glow ) )
+	end 
 
     -- Draw the player's name and team
-    draw.WordBox( 8, 32, ( ScrH() - ScrH() ) + 65, ply:Nick(), "GH_HudLabel", Color( 255, 255, 255, 0 ), Color( 255, 255, 255, 255 ) )
+    draw.WordBox( 8, 32, ( ScrH() - ScrH() ) + 65, LocalPlayer():Nick(), "GH_HudLabel", Color( 255, 255, 255, 0 ), Color( 255, 255, 255, 255 ) )
     draw.SimpleText( "Ghost Hunter", "GH_HudLabel", 87, ( ScrH() - ScrH() ) + 107, Color( 255, 255, 255, 255 ), 1, 1 )
-
 end
-hook.Add( "HUDPaint", "Paint", HUDPaint )
 
+-- 
+-- Some hand shit Garry added 
+--
 function GM:PostDrawViewModel( vm, ply, weapon )
     if ( weapon.UseHands || !weapon:IsScripted() ) then
         local hands = LocalPlayer():GetHands()
         if ( IsValid( hands ) ) then hands:DrawModel() end
     end
 end
-
-hook.Add( "Think", "ManageSprint", function 
-	if ( GetConVar( "gh_stamina" ) == 1 ) then 
-		LocalPlayer():CalcSprint()
-	end
-end )

@@ -8,24 +8,10 @@
 
 AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "shared.lua" )
-AddCSLuaFile( "sh_stamina.lua" )
  
 include( "shared.lua" )
 include( "sv_convars.lua" )
-include( "sh_stamina.lua" )
-
---
--- Handles the player's speed 
---
-local function PlayerSpeed( ply )
-    timer.Simple( 0.2, function()
-        local gh_walkspeed = GetConVar( "gh_walkspeed" )
-        local gh_runspeed = GetConVar( "gh_runspeed" )
-        GAMEMODE:SetPlayerSpeed( ply, gh_walkspeed:GetInt(), gh_runspeed:GetInt() )
-    end )
-end
-hook.Add( "PlayerInitialSpawn", "GHPlayerSpeed", PlayerSpeed )
-hook.Add( "PlayerSpawn", "GHPlayerSpeed", PlayerSpeed )
+include( "sv_stamina.lua" )
 
 --
 -- Runs the first time a player spawns
@@ -41,12 +27,16 @@ end
 function GM:PlayerSpawn( ply ) 
     if ply:Team() == 1 then
         local gh_flashlight = GetConVar( "gh_flashlight" )
+		local walkspeed = GetConVar( "gh_walkspeed" )
+		local runspeed  = GetConVar( "gh_runspeed" )
 
     -- Health and armour 
         ply:SetHealth( 200 )
         ply:SetArmor( 0 )
 
     -- Misc stuff
+		ply:SetWalkSpeed( walkspeed:GetInt() ) 
+		ply:SetRunSpeed( runspeed:GetInt() ) 
         ply:SetGravity( 1 )
         ply:AllowFlashlight( gh_flashlight:GetBool() )
 
