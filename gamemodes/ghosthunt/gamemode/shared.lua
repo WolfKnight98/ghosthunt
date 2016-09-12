@@ -10,14 +10,12 @@ GM.Name = "Ghost Hunt"
 GM.Author = "WolfKnight"
 GM.Email = "N/A"
 GM.Website = "N/A"
-GM.Version = "0.04"
+GM.Version = "0.05"
 
 DeriveGamemode( "base" )
 
 TEAM_HUNTERS = 1
 team.SetUp( TEAM_HUNTERS, "Hunters", Color( 255, 255, 255, 255 ) )
-
-PLAYER = FindMetaTable( "Player" )
 
 ghmodels = {
     model1 = "models/player/Group01/male_01.mdl",
@@ -36,10 +34,31 @@ ghmodels = {
     model14 = "models/player/Group01/Female_06.mdl"
 }
 
+--
+-- make fonts n shit 
+-- 
+function GM:Initialize()
+	if ( CLIENT ) then 
+		surface.CreateFont( "GH_HudLabel", { font = "Coolvetica", size = 20, weight = 0, antialias = true, shadow = false } )
+	end 
+	
+	if ( SERVER ) then 
+		local map = game.GetMap()
+		local SupportedMaps = { "gm_ghosthunt_2", "gm_ghosthunt_3" }
+		
+		if ( table.HasValue( SupportedMaps, map ) ) then 
+			MAP_SUPPORTED = true
+		else	
+			MAP_SUPPORTED = false
+			
+			timer.Create( "NotSupported", 10, 1, function()
+				broadcast( "This map is not supported, contact the developer of this gamemode.", 3 )
+			end )
+		end 
+	end 
+end
+
 function GM:OnPlayerChat( ply, text, teamchat, dead )
-    
-    // chat.AddText( player, Color( 255, 255, 255 ), ": ", strText )
-    
     local tab = {}
     
     if dead then
@@ -64,6 +83,13 @@ function GM:OnPlayerChat( ply, text, teamchat, dead )
     
     chat.AddText( unpack( tab ) )
 
-    return true
-    
+    return true 
 end
+
+function broadcast( str_msg, int_repeat )
+	for i = 1, int_repeat do 
+		for k, ply in pairs( player.GetAll() ) do 
+			ply:ChatPrint( "[GHOSTHUNT] " .. str_msg )
+		end 
+	end 
+end 

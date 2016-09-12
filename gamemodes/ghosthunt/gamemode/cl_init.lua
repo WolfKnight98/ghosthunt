@@ -8,12 +8,7 @@
 
 include( "shared.lua" )
 
---
--- make fonts n shit 
--- 
-function GM:Initialize()
-    surface.CreateFont( "GH_HudLabel", { font = "Coolvetica", size = 20, weight = 0, antialias = true, shadow = false } )
-end
+local detector_state = "0"
 
 --
 -- Decides what should be drawn from the original hud 
@@ -37,6 +32,7 @@ function GM:HUDPaint()
     local WEAPON_NAME = LocalPlayer():GetActiveWeapon():GetPrintName()
     local MAT_VIGNETTE = Material( "overlays/vignette01" )
 	local glow = 55 + 200 * ( math.abs( math.sin( CurTime() * 1.5 ) ) )
+	
 
     -- Draw the vignette effect, make's it more spoo-o-oooo-ky
     surface.SetMaterial( MAT_VIGNETTE )
@@ -64,6 +60,13 @@ function GM:HUDPaint()
     -- Draw the player's name and team
     draw.WordBox( 8, 32, ( ScrH() - ScrH() ) + 65, LocalPlayer():Nick(), "GH_HudLabel", Color( 255, 255, 255, 0 ), Color( 255, 255, 255, 255 ) )
     draw.SimpleText( "Ghost Hunter", "GH_HudLabel", 87, ( ScrH() - ScrH() ) + 107, Color( 255, 255, 255, 255 ), 1, 1 )
+	
+	net.Receive( "detector_state", function( len, ply )
+		detector_state = net.ReadString()
+		print( "we got the message" )
+	end )
+	
+	draw.SimpleText( detector_state, "GH_HudLabel", ScrW()/2, ( ScrH() - ScrH() ) + 130, Color( 255, 255, 255, 255 ), 1, 1 )
 end
 
 -- 
