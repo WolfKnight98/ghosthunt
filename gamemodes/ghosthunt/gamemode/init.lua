@@ -127,8 +127,13 @@ function GM:AcceptInput( ent, inp, act, cal, value )
 		elseif ( entity == "detector_sprite5" ) then 
 			PrintMessage( HUD_PRINTCENTER, "Sprite 5 has been activated!" )
 			state = "5"
+			
+			-- As of right now we'll just send it to all the players in the map
+			net.Start( "ghostie_effects" )
+			net.Broadcast()
 		end 
 		
+		-- As of right now we'll just send it to all the players in the map
 		net.Start( "detector_state" )
 			net.WriteString( state )
 		net.Broadcast()

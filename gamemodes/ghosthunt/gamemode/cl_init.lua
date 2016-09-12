@@ -33,7 +33,6 @@ function GM:HUDPaint()
     local MAT_VIGNETTE = Material( "overlays/vignette01" )
 	local glow = 55 + 200 * ( math.abs( math.sin( CurTime() * 1.5 ) ) )
 	
-
     -- Draw the vignette effect, make's it more spoo-o-oooo-ky
     surface.SetMaterial( MAT_VIGNETTE )
     surface.SetDrawColor( 255, 255, 255, 120 )
@@ -63,11 +62,22 @@ function GM:HUDPaint()
 	
 	net.Receive( "detector_state", function( len, ply )
 		detector_state = net.ReadString()
-		print( "we got the message" )
+	end )
+	
+	net.Receive( "ghostie_effects", function()
+		hook.Add( "RenderScreenspaceEffects", "GhostieEffects", DrawGhostieEffects )
+		timer.Create( "StopGhostieEffects", 10, 1, function()
+			hook.Remove( "RenderScreenspaceEffects", "GhostieEffects" )
+		end )
 	end )
 	
 	draw.SimpleText( detector_state, "GH_HudLabel", ScrW()/2, ( ScrH() - ScrH() ) + 130, Color( 255, 255, 255, 255 ), 1, 1 )
 end
+
+function DrawGhostieEffects()
+	local sexysmoothness = math.Approach( 0, 0.8, FrameTime() * 50 )
+	DrawSobel( sexysmoothness )
+end 
 
 -- 
 -- Some hand shit Garry added 
