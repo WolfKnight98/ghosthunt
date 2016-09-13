@@ -9,6 +9,8 @@
 include( "shared.lua" )
 
 local detector_state = "0"
+local smoothHealth = 100
+local smooth = 1
 
 --
 -- Decides what should be drawn from the original hud 
@@ -32,6 +34,7 @@ function GM:HUDPaint()
     local WEAPON_NAME = LocalPlayer():GetActiveWeapon():GetPrintName()
     local MAT_VIGNETTE = Material( "overlays/vignette01" )
 	local glow = 55 + 200 * ( math.abs( math.sin( CurTime() * 1.5 ) ) )
+	smoothHealth = Lerp( 10 * FrameTime(), smoothHealth, HP )
 	
     -- Draw the vignette effect, make's it more spoo-o-oooo-ky
     surface.SetMaterial( MAT_VIGNETTE )
@@ -48,7 +51,7 @@ function GM:HUDPaint()
     
     -- Draw the health bar with it's back
     draw.RoundedBox( 4, 40, ( ScrH() - ScrH() ) + 28, 230, 18, Color( 20, 20, 20, 255 ) )
-    draw.RoundedBox( 4, 40, ( ScrH() - ScrH() ) + 28, HP * 1.15, 18, Color( 255, 0, 0, 255 ) )
+    draw.RoundedBox( 4, 40, ( ScrH() - ScrH() ) + 28, smoothHealth * 1.15, 18, Color( 255, 0, 0, 255 ) )
 	
 	if ( LocalPlayer():GetNWInt( "stamina" ) ) then 
 		-- Draw the stamina bar with it's background 
@@ -64,19 +67,25 @@ function GM:HUDPaint()
 		detector_state = net.ReadString()
 	end )
 	
-	net.Receive( "ghostie_effects", function()
+	net.Receive( "ghostie_effects", function()		
+		if ( timer.Exists( "StopGhostieEffects" ) ) then return end
+		
 		hook.Add( "RenderScreenspaceEffects", "GhostieEffects", DrawGhostieEffects )
 		timer.Create( "StopGhostieEffects", 10, 1, function()
 			hook.Remove( "RenderScreenspaceEffects", "GhostieEffects" )
 		end )
+		
+		smooth = 1
 	end )
 	
 	draw.SimpleText( detector_state, "GH_HudLabel", ScrW()/2, ( ScrH() - ScrH() ) + 130, Color( 255, 255, 255, 255 ), 1, 1 )
 end
 
 function DrawGhostieEffects()
-	local sexysmoothness = math.Approach( 0, 0.8, FrameTime() * 50 )
-	DrawSobel( sexysmoothness )
+	smooth = Lerp( 0.005, smooth, 0.2 )
+	LocalPlayer():ChatPrint( smooth )
+	DrawSobel( smooth )
+	DrawMotionBlur( 0.2, 0.8, 0.01 )
 end 
 
 -- 
