@@ -15,11 +15,12 @@ if ( MAP_SUPPORTED ) then
 	--
 	hook.Add( "InitPostEntity", "DetectorFind", function()		
 		DetectorTable = {}
+		GhostDetector = nil
 		LookingFor = { "detector_sprite1", "detector_sprite2", "detector_sprite3", "detector_sprite4", "detector_sprite5", "detector_physical" }
 		
 		for _, ent in ipairs( ents.GetAll() ) do			
 			if ( table.HasValue( LookingFor, ent:GetName() ) ) then 
-				if ( ent:GetName() == "detector_physical" ) then Msg( "Ghost detector entity found in map!\n" ) end 
+				if ( ent:GetName() == "detector_physical" ) then GhostDetector = ent print( "Ghost detector entity found in map!\n" ) end 
 				table.insert( DetectorTable, ent )
 			end 
 		end 

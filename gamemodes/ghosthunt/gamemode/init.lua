@@ -97,45 +97,35 @@ end
 -- Controls the I/O of a map 
 --
 function GM:AcceptInput( ent, inp, act, cal, value )
-	local entity
-	local activator
-	local caller
-	
-	-- Make sure that the entities are actually valid 
-	if !ent:IsValid() then entity = "error" else entity = ent:GetName() end 
-	if !act:IsValid() then activator = "error" else activator = act:GetName() end 
-	if !cal:IsValid() then caller = "error" else caller = cal:GetName() end
-	
-	--print( entity, inp, activator, caller, value )
-
-	-- gm_ghosthunt series support, they all use the same entity names, THANKS BREADMAN :D
-	if ( inp == "ShowSprite" ) then 
-		state = "0"
+	if ( MAP_SUPPORTED ) then 
+		local entity
+		local activator
+		local caller
 		
-		if ( entity == "detector_sprite1" ) then 
-			PrintMessage( HUD_PRINTCENTER, "Sprite 1 has been activated!" )
-			state = "1"
-		elseif ( entity == "detector_sprite2" ) then 
-			PrintMessage( HUD_PRINTCENTER, "Sprite 2 has been activated!" )
-			state = "2"
-		elseif ( entity == "detector_sprite3" ) then 
-			PrintMessage( HUD_PRINTCENTER, "Sprite 3 has been activated!" )
-			state = "3"
-		elseif ( entity == "detector_sprite4" ) then 
-			PrintMessage( HUD_PRINTCENTER, "Sprite 4 has been activated!" )
-			state = "4"
-		elseif ( entity == "detector_sprite5" ) then 
-			PrintMessage( HUD_PRINTCENTER, "Sprite 5 has been activated!" )
-			state = "5"
+		-- Make sure that the entities are actually valid 
+		if !ent:IsValid() then entity = "error" else entity = ent:GetName() end 
+		if !act:IsValid() then activator = "error" else activator = act:GetName() end 
+		if !cal:IsValid() then caller = "error" else caller = cal:GetName() end
+		
+		--print( entity, inp, activator, caller, value )
+
+		-- gm_ghosthunt series support, they all use the same entity names, THANKS BREADMAN :D
+		if ( inp == "ShowSprite" ) then 
+			state = "0"
+			
+			if     ( entity == "detector_sprite1" ) then state = "1"
+			elseif ( entity == "detector_sprite2" ) then state = "2"
+			elseif ( entity == "detector_sprite3" ) then state = "3"
+			elseif ( entity == "detector_sprite4" ) then state = "4"
+			elseif ( entity == "detector_sprite5" ) then state = "5" 
+				net.Start( "ghostie_effects" ) 
+				net.Broadcast()
+			end 
 			
 			-- As of right now we'll just send it to all the players in the map
-			net.Start( "ghostie_effects" )
+			net.Start( "detector_state" )
+				net.WriteString( state )
 			net.Broadcast()
 		end 
-		
-		-- As of right now we'll just send it to all the players in the map
-		net.Start( "detector_state" )
-			net.WriteString( state )
-		net.Broadcast()
-	end 
+	end
 end 
