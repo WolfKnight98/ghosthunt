@@ -52,6 +52,7 @@ function GM:PlayerSpawn( ply )
         ply:Give( "weapon_physcannon" )
         ply:Give( "weapon_medkit" )
         ply:Give( "gmod_camera" )
+		ply:Give( "gh_hands" )
     end
 
     ply:SetupHands()

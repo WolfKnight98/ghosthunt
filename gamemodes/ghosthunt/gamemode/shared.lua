@@ -14,6 +14,8 @@ GM.Version = "0.05"
 
 DeriveGamemode( "base" )
 
+if ( CLIENT ) then resource.AddFile( "materials/overlays/vignette01.vmt" ) resource.AddFile( "materials/overlays/vignette01.vtf" ) end 
+
 TEAM_HUNTERS = 1
 team.SetUp( TEAM_HUNTERS, "Hunters", Color( 255, 255, 255, 255 ) )
 
