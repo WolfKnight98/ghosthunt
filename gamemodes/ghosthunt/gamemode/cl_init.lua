@@ -74,7 +74,7 @@ end
 -- Draws the PP effects on the screen when near a ghost
 --
 function DrawSanityEffect()
-	DrawMotionBlur( 0.12, timer.TimeLeft( "StopSanityEffect" ) / 8, 0.01 )
+	DrawMotionBlur( 0.12, timer.TimeLeft( "StopSanityEffect" ) / 4, 0.01 )
 end 
 
 -- 
