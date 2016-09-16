@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------
     
-    Ghost Hunt
+    GhostHunt
     Made By: WolfKnight
     sv_convars.lua
     

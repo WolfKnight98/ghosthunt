@@ -1,7 +1,7 @@
 "ghosthunt"
 {
 	"base"		"base"
-	"title"		"Ghost Hunt"
+	"title"		"GhostHunt"
 	"maps"		"^gh_"
 	"menusystem"	"1"
 	"settings"

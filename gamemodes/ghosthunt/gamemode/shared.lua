@@ -1,12 +1,12 @@
 /*---------------------------------------------------------------------------
     
-    Ghost Hunt
+    GhostHunt
     Made By: WolfKnight
     shared.lua
     
 ---------------------------------------------------------------------------*/
 
-GM.Name = "Ghost Hunt"
+GM.Name = "GhostHunt"
 GM.Author = "WolfKnight"
 GM.Email = "N/A"
 GM.Website = "N/A"
@@ -14,27 +14,11 @@ GM.Version = "0.05"
 
 DeriveGamemode( "base" )
 
-if ( CLIENT ) then resource.AddFile( "materials/overlays/vignette01.vmt" ) resource.AddFile( "materials/overlays/vignette01.vtf" ) end 
+-- add in when the content pack is on the workshop 
+--if ( CLIENT ) then resource.AddWorkshop() end 
 
 TEAM_HUNTERS = 1
 team.SetUp( TEAM_HUNTERS, "Hunters", Color( 255, 255, 255, 255 ) )
-
-ghmodels = {
-    model1 = "models/player/Group01/male_01.mdl",
-    model2 = "models/player/Group01/male_02.mdl",
-    model3 = "models/player/Group01/male_03.mdl",
-    model4 = "models/player/Group01/male_04.mdl",
-    model5 = "models/player/Group01/male_05.mdl",
-    model6 = "models/player/Group01/male_06.mdl",
-    model7 = "models/player/Group01/male_07.mdl",
-    model8 = "models/player/Group01/male_08.mdl",
-    model9 = "models/player/Group01/male_09.mdl",
-    model10 = "models/player/Group01/Female_01.mdl",
-    model11 = "models/player/Group01/Female_02.mdl",
-    model12 = "models/player/Group01/Female_03.mdl",
-    model13 = "models/player/Group01/Female_04.mdl",
-    model14 = "models/player/Group01/Female_06.mdl"
-}
 
 --
 -- make fonts n shit 

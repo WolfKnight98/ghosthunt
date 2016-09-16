@@ -1,13 +1,13 @@
 /*---------------------------------------------------------------------------
     
-    Ghost Hunt
+    GhostHunt
     Made By: WolfKnight
     init.lua
     
 ---------------------------------------------------------------------------*/
 
 util.AddNetworkString( "detector_state" )
-util.AddNetworkString( "ghostie_effects" )
+util.AddNetworkString( "sanity_effect" )
 
 AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "shared.lua" )
@@ -23,8 +23,17 @@ local state = "0"
 -- Runs the first time a player spawns
 --
 function GM:PlayerInitialSpawn( ply )
+	local randModel = math.random( 1, 2 )
+
+	if ( randModel == 1 ) then 
+		local r = math.random( 1, 9 )
+		ply:SetModel( "models/player/Group01/male_0" .. r .. ".mdl" )
+	else 
+		local r = math.random( 1, 6 )
+		ply:SetModel( "models/player/Group01/Female_0" .. r .. ".mdl" )
+	end 
+	
     ply:SetTeam( 1 )
-	ply:SetModel( table.Random( ghmodels ) )
 end
 
 --
@@ -51,8 +60,8 @@ function GM:PlayerSpawn( ply )
         ply:Give( "weapon_crowbar" )
         ply:Give( "weapon_physcannon" )
         ply:Give( "weapon_medkit" )
-        ply:Give( "gmod_camera" )
 		ply:Give( "gh_hands" )
+		ply:Give( "gh_camera" )
     end
 
     ply:SetupHands()
@@ -95,6 +104,19 @@ function GM:PlayerNoClip( ply )
 end 
 
 --
+-- Whether or not a player can pickup an object
+--
+function GM:AllowPlayerPickup( ply )
+	local weapon = ply:GetActiveWeapon():GetClass()
+	
+	if ( weapon == "gh_camera" ) then 
+		return false
+	end 
+	
+	return true 
+end 
+
+--
 -- Controls the I/O of a map 
 --
 function GM:AcceptInput( ent, inp, act, cal, value )
@@ -119,7 +141,7 @@ function GM:AcceptInput( ent, inp, act, cal, value )
 			elseif ( entity == "detector_sprite3" ) then state = "3"
 			elseif ( entity == "detector_sprite4" ) then state = "4"
 			elseif ( entity == "detector_sprite5" ) then state = "5" 
-				net.Start( "ghostie_effects" ) 
+				net.Start( "sanity_effect" ) 
 				net.Broadcast()
 			end 
 			
