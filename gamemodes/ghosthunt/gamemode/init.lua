@@ -6,7 +6,6 @@
     
 ---------------------------------------------------------------------------*/
 
-util.AddNetworkString( "detector_state" )
 util.AddNetworkString( "sanity_effect" )
 
 AddCSLuaFile( "cl_init.lua" )
@@ -15,9 +14,7 @@ AddCSLuaFile( "shared.lua" )
 include( "shared.lua" )
 include( "sv_convars.lua" )
 include( "sv_stamina.lua" )
-include( "sv_detector.lua" )
-
-local state = "0"
+include( "sv_detector.lua" ) 
 
 --
 -- Runs the first time a player spawns
@@ -122,33 +119,19 @@ end
 function GM:AcceptInput( ent, inp, act, cal, value )
 	if ( MAP_SUPPORTED ) then 
 		local entity
-		local activator
-		local caller
 		
 		-- Make sure that the entities are actually valid 
 		if !ent:IsValid() then entity = "error" else entity = ent:GetName() end 
-		if !act:IsValid() then activator = "error" else activator = act:GetName() end 
-		if !cal:IsValid() then caller = "error" else caller = cal:GetName() end
-		
-		--print( entity, inp, activator, caller, value )
 
-		-- gm_ghosthunt series support, they all use the same entity names, THANKS BREADMAN :D
 		if ( inp == "ShowSprite" ) then 
-			state = "0"
-			
-			if     ( entity == "detector_sprite1" ) then state = "1"
-			elseif ( entity == "detector_sprite2" ) then state = "2"
-			elseif ( entity == "detector_sprite3" ) then state = "3"
-			elseif ( entity == "detector_sprite4" ) then state = "4"
-			elseif ( entity == "detector_sprite5" ) then state = "5" 
-				net.Start( "sanity_effect" ) 
-				net.Broadcast()
+			if ( (entity == "detector_sprite5" ) or (entity == "detector_red_light") ) then				
+				for _, enti in ipairs( ents.FindInSphere( ent:GetPos(), 96 ) ) do 
+					if ( enti:IsPlayer() ) then 
+						net.Start( "sanity_effect" ) 
+						net.Send( enti )
+					end 
+				end 
 			end 
-			
-			-- As of right now we'll just send it to all the players in the map
-			net.Start( "detector_state" )
-				net.WriteString( state )
-			net.Broadcast()
 		end 
 	end
 end 

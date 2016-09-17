@@ -30,15 +30,16 @@ function GM:Initialize()
 	
 	if ( SERVER ) then 
 		local map = game.GetMap()
-		local SupportedMaps = { "gm_ghosthunt_2", "gm_ghosthunt_3" }
+		local SupportedMaps = { "gm_ghosthunt_2", "gm_ghosthunt_3", "gm_paranormal" }
 		
 		if ( table.HasValue( SupportedMaps, map ) ) then 
 			MAP_SUPPORTED = true
+			CURRENT_MAP = map
 		else	
 			MAP_SUPPORTED = false
 			
 			timer.Create( "NotSupported", 10, 1, function()
-				broadcast( "This map is not supported, contact the developer of this gamemode.", 3 )
+				broadcast( "This map is not supported, contact the developer of this gamemode or the map creator.", 1 )
 			end )
 		end 
 	end 

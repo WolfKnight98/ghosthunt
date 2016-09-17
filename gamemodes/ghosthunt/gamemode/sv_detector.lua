@@ -13,14 +13,12 @@ if ( MAP_SUPPORTED ) then
 	--
 	-- This hook tries to find the ghost detector entity in the map 
 	--
-	hook.Add( "InitPostEntity", "DetectorFind", function()		
-		DetectorTable = {}
-		LookingFor = { "detector_sprite1", "detector_sprite2", "detector_sprite3", "detector_sprite4", "detector_sprite5", "detector_physical" }
-		
-		for _, ent in ipairs( ents.GetAll() ) do			
-			if ( table.HasValue( LookingFor, ent:GetName() ) ) then 
-				if ( ent:GetName() == "detector_physical" ) then print( "Ghost detector entity found in map!\n" ) end 
-				table.insert( DetectorTable, ent )
+	hook.Add( "InitPostEntity", "DetectorFind", function()				
+		local detectors = { "detector_physical", "ghost_detector" }
+	
+		for _, ent in ipairs( ents.GetAll() ) do		
+			if ( table.HasValue( detectors, ent:GetName() ) ) then 
+				print( "[GHOSTHUNT] Ghost detector entity found in map!\n" )
 			end 
 		end 
 	end )

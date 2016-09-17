@@ -88,13 +88,6 @@ function GM:PostDrawViewModel( vm, ply, weapon )
 end
 
 --
--- Gets the detector state from the server
---
-net.Receive( "detector_state", function()
-	detector_state = net.ReadString()
-end )
-
---
 -- Controls the ghostie effects 
 --
 net.Receive( "sanity_effect", function()		
