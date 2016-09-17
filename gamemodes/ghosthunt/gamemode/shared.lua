@@ -34,7 +34,6 @@ function GM:Initialize()
 		
 		if ( table.HasValue( SupportedMaps, map ) ) then 
 			MAP_SUPPORTED = true
-			CURRENT_MAP = map
 		else	
 			MAP_SUPPORTED = false
 			

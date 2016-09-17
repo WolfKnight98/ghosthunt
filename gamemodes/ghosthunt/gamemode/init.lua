@@ -120,7 +120,6 @@ function GM:AcceptInput( ent, inp, act, cal, value )
 	if ( MAP_SUPPORTED ) then 
 		local entity
 		
-		-- Make sure that the entities are actually valid 
 		if !ent:IsValid() then entity = "error" else entity = ent:GetName() end 
 
 		if ( inp == "ShowSprite" ) then 
