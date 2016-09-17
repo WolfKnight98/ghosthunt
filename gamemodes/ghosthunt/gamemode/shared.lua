@@ -14,8 +14,8 @@ GM.Version = "0.05"
 
 DeriveGamemode( "base" )
 
--- add in when the content pack is on the workshop 
---if ( CLIENT ) then resource.AddWorkshop() end 
+-- Sends the client the content pack from the workshop
+if ( SERVER ) then resource.AddWorkshop( "765482742" ) end 
 
 TEAM_HUNTERS = 1
 team.SetUp( TEAM_HUNTERS, "Hunters", Color( 255, 255, 255, 255 ) )
