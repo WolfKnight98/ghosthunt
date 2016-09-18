@@ -20,9 +20,9 @@ include( "sv_detector.lua" )
 -- Runs the first time a player spawns
 --
 function GM:PlayerInitialSpawn( ply )
-	local randModel = math.random( 1, 2 )
+	local randModel = math.random( 1, 10 )
 
-	if ( randModel == 1 ) then 
+	if ( (randModel >= 1) and (randModel <= 8) ) then 
 		local r = math.random( 1, 9 )
 		ply:SetModel( "models/player/Group01/male_0" .. r .. ".mdl" )
 	else 
@@ -111,6 +111,13 @@ function GM:AllowPlayerPickup( ply )
 	end 
 	
 	return true 
+end 
+
+--
+-- Controls gravity punt (primary fire)
+--
+function GM:GravGunPunt( ply, ent )
+	return GetConVar( "gh_allowgravpunt" ):GetBool()
 end 
 
 --
