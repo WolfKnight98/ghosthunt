@@ -54,11 +54,11 @@ function GM:PlayerSpawn( ply )
 
     -- Give sweps/weapons
         ply:StripWeapons()
+		ply:Give( "gh_hands" )
+		ply:Give( "gh_camera" )
         ply:Give( "weapon_crowbar" )
         ply:Give( "weapon_physcannon" )
         ply:Give( "weapon_medkit" )
-		ply:Give( "gh_hands" )
-		ply:Give( "gh_camera" )
     end
 
     ply:SetupHands()
