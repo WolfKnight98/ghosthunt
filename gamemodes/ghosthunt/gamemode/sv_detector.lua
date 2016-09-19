@@ -6,6 +6,9 @@
     
 ---------------------------------------------------------------------------*/
 
+-- Make a variable that will store the ghost detector entity 
+GHOST_DETECTOR_ENT = nil 
+
 -- Only runs if the map is supported 
 if ( MAP_SUPPORTED ) then 
 	--
@@ -22,6 +25,7 @@ if ( MAP_SUPPORTED ) then
 		for _, ent in ipairs( ents.GetAll() ) do		
 			if ( table.HasValue( detectors, ent:GetName() ) ) then 
 				print( "[GHOSTHUNT] Ghost detector entity found in map!\n" )
+				GHOST_DETECTOR_ENT = ent
 			end 
 		end 
 	end )

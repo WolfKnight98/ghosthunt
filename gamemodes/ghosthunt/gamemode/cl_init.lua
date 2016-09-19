@@ -94,7 +94,7 @@ net.Receive( "sanity_effect", function()
 	if ( timer.Exists( "StopSanityEffect" ) ) then return end
 	
 	hook.Add( "RenderScreenspaceEffects", "SanityEffect", DrawSanityEffect )
-	timer.Create( "StopSanityEffect", 10, 1, function()
+	timer.Create( "StopSanityEffect", 15, 1, function()
 		hook.Remove( "RenderScreenspaceEffects", "SanityEffect" )
 	end )
 end )

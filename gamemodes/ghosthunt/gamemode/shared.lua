@@ -10,7 +10,7 @@ GM.Name = "GhostHunt"
 GM.Author = "WolfKnight"
 GM.Email = "N/A"
 GM.Website = "N/A"
-GM.Version = "0.05"
+GM.Version = "1.00"
 
 DeriveGamemode( "base" )
 

@@ -56,9 +56,9 @@ function GM:PlayerSpawn( ply )
         ply:StripWeapons()
 		ply:Give( "gh_hands" )
 		ply:Give( "gh_camera" )
+		ply:Give( "gh_medkit" )
         ply:Give( "weapon_crowbar" )
         ply:Give( "weapon_physcannon" )
-        ply:Give( "weapon_medkit" )
     end
 
     ply:SetupHands()
@@ -127,10 +127,16 @@ function GM:AcceptInput( ent, inp, act, cal, value )
 	if ( MAP_SUPPORTED ) then 
 		local entity
 		
+		-- Make sure that the entity is valid so errors don't throw up 
 		if !ent:IsValid() then entity = "error" else entity = ent:GetName() end 
 
+		-- This will run when the ghost detector starts lighting up
 		if ( inp == "ShowSprite" ) then 
-			if ( (entity == "detector_sprite5" ) or (entity == "detector_red_light") ) then				
+		
+			-- Only starts the sanity effect when you're about to get butt-fucked
+			if ( (entity == "detector_sprite5" ) or (entity == "detector_red_light") ) then	
+			
+				-- Checks a sphere of 96 units around the ghost detector and starts the sanity effect for players in the sphere 
 				for _, enti in ipairs( ents.FindInSphere( ent:GetPos(), 96 ) ) do 
 					if ( enti:IsPlayer() ) then 
 						net.Start( "sanity_effect" ) 
