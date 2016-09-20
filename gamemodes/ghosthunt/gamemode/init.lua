@@ -7,6 +7,7 @@
 ---------------------------------------------------------------------------*/
 
 util.AddNetworkString( "sanity_effect" )
+util.AddNetworkString( "has_detector" )
 
 AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "shared.lua" )
@@ -105,9 +106,27 @@ end
 --
 function GM:AllowPlayerPickup( ply )
 	local weapon = ply:GetActiveWeapon():GetClass()
+	local item = ply:GetEyeTrace().Entity
 	
+	-- We don't want the player to pickup items when they have the camera 
+	-- out due to a bug where the weapons switch. 
 	if ( weapon == "gh_camera" ) then 
 		return false
+	end 
+	
+	-- Attach the ghost detector to the player that has used it 
+	if ( table.HasValue( GHOST_DETECTORS, item:GetName() ) ) then 
+		if ( IsValid(item) and ( !item.IsAttached or item.IsAttached == false ) ) then 
+			ply:ChatPrint( "You are looking at a ghost detector." )
+			
+			item:SetParent( ply )
+			item.IsAttached = true 
+			
+			net.Start( "has_detector" ) 
+			net.Send( ply )
+			
+			return false 
+		end 
 	end 
 	
 	return true 

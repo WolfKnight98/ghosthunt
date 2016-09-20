@@ -8,9 +8,12 @@
 
 include( "shared.lua" )
 
-local detector_state = "0"
+local DrawHasDetector = false 
 local smoothHealth = 100
 local MAT_VIGNETTE = Material( "overlays/vignette01" )
+local width 
+local height 
+
 local ScrH = ScrH()
 local ScrW = ScrW()
 local surface = surface
@@ -68,6 +71,10 @@ function GM:HUDPaint()
     -- Draw the player's name and team
     draw.WordBox( 8, 32, ( ScrH - ScrH ) + 65, NAME, "GH_HudLabel", Color( 255, 255, 255, 0 ), Color( 255, 255, 255, 255 ) )
     draw.SimpleText( "Ghost Hunter", "GH_HudLabel", 87, ( ScrH - ScrH ) + 107, Color( 255, 255, 255, 255 ), 1, 1 )
+	
+	if ( DrawHasDetector ) then 
+		draw.SimpleText( "You have the ghost detector.", "GH_HudLabel", ScrW - width, ScrH - height - 30, Color( 255, 255, 255, 255 ), 1, 1 )
+	end 
 end
 
 --
@@ -94,7 +101,16 @@ net.Receive( "sanity_effect", function()
 	if ( timer.Exists( "StopSanityEffect" ) ) then return end
 	
 	hook.Add( "RenderScreenspaceEffects", "SanityEffect", DrawSanityEffect )
-	timer.Create( "StopSanityEffect", 15, 1, function()
+	timer.Create( "StopSanityEffect", 10, 1, function()
 		hook.Remove( "RenderScreenspaceEffects", "SanityEffect" )
 	end )
+end )
+
+--
+--
+--
+net.Receive( "has_detector", function()
+	DrawHasDetector = true 
+	surface.SetFont( "GH_HudLabel" )
+	width, height = surface.GetTextSize( "You have the ghost detector." )
 end )
