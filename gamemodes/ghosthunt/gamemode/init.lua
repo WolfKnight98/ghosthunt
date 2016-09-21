@@ -116,13 +116,16 @@ function GM:AllowPlayerPickup( ply )
 	
 	-- Attach the ghost detector to the player that has used it 
 	if ( table.HasValue( GHOST_DETECTORS, item:GetName() ) ) then 
-		if ( IsValid(item) and ( !item.IsAttached or item.IsAttached == false ) ) then 
+		if ( !item.IsAttached or item.IsAttached == false ) then 
 			ply:ChatPrint( "You are looking at a ghost detector." )
 			
+			item:SetPos( ply:GetPos() + Vector( 0, 0, 0 ) )
 			item:SetParent( ply )
-			item.IsAttached = true 
+			--item:SetNoDraw( true )
+			item.IsAttached = true
+			item.AttachedTo = ply 
 			
-			net.Start( "has_detector" ) 
+			net.Start( "has_detector" )
 			net.Send( ply )
 			
 			return false 
