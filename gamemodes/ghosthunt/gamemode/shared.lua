@@ -33,24 +33,11 @@ GHOST_DETECTORS = { "detector_physical", "ghost_detector" }
 -- make fonts n shit 
 -- 
 function GM:Initialize()
+	self.BaseClass.Initialize( self )
+	
 	if ( CLIENT ) then 
 		surface.CreateFont( "GH_HudLabel", { font = "Coolvetica", size = 20, weight = 0, antialias = true, shadow = false } )
-	end 
-	
-	if ( SERVER ) then 
-		local map = game.GetMap()
-		local SupportedMaps = { "gm_ghosthunt_2", "gm_ghosthunt_3", "gm_paranormal" }
-		
-		if ( table.HasValue( SupportedMaps, map ) ) then 
-			MAP_SUPPORTED = true
-		else	
-			MAP_SUPPORTED = false
-			
-			timer.Create( "NotSupported", 10, 1, function()
-				broadcast( "This map is not supported, contact the developer of this gamemode or the map creator.", 1 )
-			end )
-		end 
-	end 
+	end
 end
 
 function GM:OnPlayerChat( ply, text, teamchat, dead )

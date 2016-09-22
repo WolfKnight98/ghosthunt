@@ -19,11 +19,20 @@ local ScrW = ScrW()
 local surface = surface
 local draw = draw
 
+GM.ToHide = 
+{
+	"CHudHealth",
+	"CHudBattery", 
+	"CHudAmmo", 
+	"CHudSecondaryAmmo", 
+	"CHudCrosshair"
+}
+
 --
 -- Decides what should be drawn from the original hud 
 --
 function GM:HUDShouldDraw( name )
-    if ( name == "CHudHealth" or name == "CHudBattery" or name == "CHudAmmo" or name == "CHudSecondaryAmmo" or name == "CHudCrosshair" ) then
+    if ( table.HasValue( self.ToHide, name ) ) then
         return false
     end
     return true
@@ -50,7 +59,7 @@ function GM:HUDPaint()
     surface.DrawTexturedRect( 0, 0, ScrW, ScrH )
 
 	-- Stop drawing the main HUD if we have the camera equipped
-    if ( (WEAPON_NAME == "#GMOD_Camera") or (WEAPON_NAME == "Camcorder") ) then return end
+    if ( WEAPON_NAME == "Camcorder" ) then return end
     
     -- Draw the basic dot crosshair 
     --surface.DrawCircle( ScrW / 2, ScrH / 2, 1, Color( 255, 255, 255, 120 ) )

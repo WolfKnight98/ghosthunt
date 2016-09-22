@@ -17,6 +17,26 @@ include( "sv_convars.lua" )
 include( "sv_stamina.lua" )
 include( "sv_detector.lua" ) 
 
+
+--
+--
+--
+hook.Add( "Initialize", "MapConfigLoad", function()
+	local map = game.GetMap()
+	local map_config = GAMEMODE.FolderName .. "/gamemode/maps/" .. map .. ".lua"
+	
+	if ( file.Exists( map_config, "LUA" ) ) then 
+		include( map_config )
+		MAP_SUPPORTED = true 
+	else 
+		MAP_SUPPORTED = false 
+		
+		timer.Create( "NotSupported", 10, 1, function()
+			broadcast( "This map is not supported, contact the developer of this gamemode or the map creator.", 1 )
+		end )
+	end 
+end )
+
 --
 -- Runs the first time a player spawns
 --
@@ -50,7 +70,7 @@ function GM:PlayerSpawn( ply )
     -- Misc stuff
 		ply:SetWalkSpeed( walkspeed:GetInt() ) 
 		ply:SetRunSpeed( runspeed:GetInt() ) 
-        ply:SetGravity( 1 )
+        ply:SetGravity( 0.8 )
         ply:AllowFlashlight( gh_flashlight:GetBool() )
 
     -- Give sweps/weapons
@@ -115,11 +135,15 @@ function GM:AllowPlayerPickup( ply )
 	end 
 	
 	-- Attach the ghost detector to the player that has used it 
-	if ( table.HasValue( GHOST_DETECTORS, item:GetName() ) ) then 
+	if ( item:GetName() == self.GhostDetector ) then 
 		if ( !item.IsAttached or item.IsAttached == false ) then 
 			ply:ChatPrint( "You are looking at a ghost detector." )
 			
-			item:SetPos( ply:GetPos() + Vector( 0, 0, 0 ) )
+			local pos = ply:GetPos()
+			local ang = ply:GetAngles()
+			
+			item:SetPos( pos + Vector( 50, 0, 50 ) )
+			item:SetAngles( ang )
 			item:SetParent( ply )
 			--item:SetNoDraw( true )
 			item.IsAttached = true
@@ -156,7 +180,7 @@ function GM:AcceptInput( ent, inp, act, cal, value )
 		if ( inp == "ShowSprite" ) then 
 		
 			-- Only starts the sanity effect when you're about to get butt-fucked
-			if ( (entity == "detector_sprite5" ) or (entity == "detector_red_light") ) then	
+			if ( entity == self.FinalSprite ) then	
 			
 				-- Checks a sphere of 96 units around the ghost detector and starts the sanity effect for players in the sphere 
 				for _, enti in ipairs( ents.FindInSphere( ent:GetPos(), 96 ) ) do 
