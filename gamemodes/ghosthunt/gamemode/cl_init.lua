@@ -9,9 +9,10 @@
 include( "shared.lua" )
 include( "cl_panels.lua" )
 
-CreateClientConVar( "gh_cl_drawcrosshair", "0", true, false )
-CreateClientConVar( "gh_cl_drawvignette", "1", true, false )
-CreateClientConVar( "gh_cl_staminaflash", "1", true, false )
+GM.DrawCrosshair = CreateClientConVar( "gh_cl_drawcrosshair", "0", true, false )
+GM.DrawVignette = CreateClientConVar( "gh_cl_drawvignette", "1", true, false )
+GM.ShouldStaminaFlash = CreateClientConVar( "gh_cl_staminaflash", "1", true, false )
+GM.BetaHud = CreateClientConVar( "gh_cl_betahud", "0", true, false )
 
 local DrawHasDetector = false 
 local smoothHealth = 100
@@ -51,15 +52,15 @@ function GM:HUDPaint()
     if !( LocalPlayer():GetActiveWeapon() and IsValid( LocalPlayer():GetActiveWeapon() ) ) then return end
 
     -- Define the local variables used for the hud
-    local HP = math.Clamp( LocalPlayer():Health(), 0, 200 )
+    local HP          = math.Clamp( LocalPlayer():Health(), 0, 200 )
     local WEAPON_NAME = LocalPlayer():GetActiveWeapon():GetPrintName()
-	local GLOW = 55 + 200 * ( math.abs( math.sin( CurTime() * 1.5 ) ) )
-	local STAMINA = LocalPlayer():GetNWInt( "stamina" )
-	local NAME = LocalPlayer():Nick()
-	smoothHealth = Lerp( 10 * FrameTime(), smoothHealth, HP )
+	local GLOW        = 55 + 200 * ( math.abs( math.sin( CurTime() * 1.5 ) ) )
+	local STAMINA     = LocalPlayer():GetNWInt( "stamina" )
+	local NAME        = LocalPlayer():Nick()
+	smoothHealth      = Lerp( 10 * FrameTime(), smoothHealth, HP )
 	
     -- Draw the vignette effect, make's it more spoo-o-oooo-ky
-	if ( GetConVar( "gh_cl_drawvignette" ):GetBool() == true ) then 
+	if ( GAMEMODE.DrawVignette:GetBool() == true ) then 
 		surface.SetMaterial( MAT_VIGNETTE )
 		surface.SetDrawColor( 255, 255, 255, 120 )
 		surface.DrawTexturedRect( 0, 0, ScrW, ScrH )
@@ -69,33 +70,37 @@ function GM:HUDPaint()
     if ( WEAPON_NAME == "Camcorder" ) then return end
     
     -- Draw the basic dot crosshair 
-	if ( GetConVar( "gh_cl_drawcrosshair" ):GetBool() == true ) then 
+	if ( GAMEMODE.DrawCrosshair:GetBool() == true ) then 
 		surface.DrawCircle( ScrW / 2, ScrH / 2, 1, Color( 255, 255, 255, 120 ) )
 	end 
 	
-    -- Draw the HUD box :D
-    draw.RoundedBox( 8, 30, ( ScrH - ScrH ) + 18, 250, 110, Color( 20, 20, 20, 180 ) )
-    
-    -- Draw the health bar with it's back
-    draw.RoundedBox( 4, 40, ( ScrH - ScrH ) + 28, 230, 18, Color( 20, 20, 20, 255 ) )
-    draw.RoundedBox( 4, 40, ( ScrH - ScrH ) + 28, smoothHealth * 1.15, 18, Color( 255, 0, 0, 255 ) )
-	
-	if ( STAMINA ) then 
-		-- Draw the stamina bar with it's background 
-		draw.RoundedBox( 4, 40, ( ScrH - ScrH ) + 50, 230, 9, Color( 20, 20, 20, 255 ) )
+	if ( GAMEMODE.BetaHud:GetBool() == false ) then 
+		-- Draw the HUD box :D
+		draw.RoundedBox( 8, 30, ( ScrH - ScrH ) + 18, 250, 110, Color( 20, 20, 20, 180 ) )
 		
-		if ( STAMINA > 2 ) then
-			if ( GetConVar( "gh_cl_staminaflash" ):GetBool() == true ) then 
-				draw.RoundedBox( 4, 40, ( ScrH - ScrH ) + 50, STAMINA * 2.3, 9, Color( 120, 240, 60, GLOW ) )
-			else 
-				draw.RoundedBox( 4, 40, ( ScrH - ScrH ) + 50, STAMINA * 2.3, 9, Color( 120, 240, 60, 255 ) )
+		-- Draw the health bar with it's back
+		draw.RoundedBox( 4, 40, ( ScrH - ScrH ) + 28, 230, 18, Color( 20, 20, 20, 255 ) )
+		draw.RoundedBox( 4, 40, ( ScrH - ScrH ) + 28, smoothHealth * 1.15, 18, Color( 255, 0, 0, 255 ) )
+		
+		if ( STAMINA ) then 
+			-- Draw the stamina bar with it's background 
+			draw.RoundedBox( 4, 40, ( ScrH - ScrH ) + 50, 230, 9, Color( 20, 20, 20, 255 ) )
+			
+			if ( STAMINA > 2 ) then
+				if ( GAMEMODE.ShouldStaminaFlash:GetBool() == true ) then 
+					draw.RoundedBox( 4, 40, ( ScrH - ScrH ) + 50, STAMINA * 2.3, 9, Color( 120, 240, 60, GLOW ) )
+				else 
+					draw.RoundedBox( 4, 40, ( ScrH - ScrH ) + 50, STAMINA * 2.3, 9, Color( 120, 240, 60, 255 ) )
+				end 
 			end 
 		end 
-	end 
 
-    -- Draw the player's name and team
-    draw.WordBox( 8, 32, ( ScrH - ScrH ) + 65, NAME, "GH_HudLabel", Color( 255, 255, 255, 0 ), Color( 255, 255, 255, 255 ) )
-    draw.SimpleText( "Ghost Hunter", "GH_HudLabel", 87, ( ScrH - ScrH ) + 107, Color( 255, 255, 255, 255 ), 1, 1 )
+		-- Draw the player's name and team
+		draw.WordBox( 8, 32, ( ScrH - ScrH ) + 65, NAME, "GH_HudLabel", Color( 255, 255, 255, 0 ), Color( 255, 255, 255, 255 ) )
+		draw.SimpleText( "Ghost Hunter", "GH_HudLabel", 87, ( ScrH - ScrH ) + 107, Color( 255, 255, 255, 255 ), 1, 1 )
+	else
+		
+	end 
 	
 	if ( DrawHasDetector ) then 
 		draw.SimpleText( "You have the ghost detector.", "GH_HudLabel", ScrW - width, ScrH - height - 30, Color( 255, 255, 255, 255 ), 1, 1 )
