@@ -72,7 +72,7 @@ function GM:PlayerSpawn( ply )
     -- Misc stuff
 		ply:SetWalkSpeed( walkspeed:GetInt() ) 
 		ply:SetRunSpeed( runspeed:GetInt() ) 
-        ply:SetGravity( 0.8 )
+        ply:SetGravity( 1 )
         ply:AllowFlashlight( gh_flashlight:GetBool() )
 
     -- Give sweps/weapons

@@ -9,6 +9,10 @@
 include( "shared.lua" )
 include( "cl_panels.lua" )
 
+CreateClientConVar( "gh_cl_drawcrosshair", "0", true, false )
+CreateClientConVar( "gh_cl_drawvignette", "1", true, false )
+CreateClientConVar( "gh_cl_staminaflash", "1", true, false )
+
 local DrawHasDetector = false 
 local smoothHealth = 100
 local MAT_VIGNETTE = Material( "overlays/vignette01" )
@@ -55,16 +59,20 @@ function GM:HUDPaint()
 	smoothHealth = Lerp( 10 * FrameTime(), smoothHealth, HP )
 	
     -- Draw the vignette effect, make's it more spoo-o-oooo-ky
-    surface.SetMaterial( MAT_VIGNETTE )
-    surface.SetDrawColor( 255, 255, 255, 120 )
-    surface.DrawTexturedRect( 0, 0, ScrW, ScrH )
-
+	if ( GetConVar( "gh_cl_drawvignette" ):GetBool() == true ) then 
+		surface.SetMaterial( MAT_VIGNETTE )
+		surface.SetDrawColor( 255, 255, 255, 120 )
+		surface.DrawTexturedRect( 0, 0, ScrW, ScrH )
+    end 
+	
 	-- Stop drawing the main HUD if we have the camera equipped
     if ( WEAPON_NAME == "Camcorder" ) then return end
     
     -- Draw the basic dot crosshair 
-    --surface.DrawCircle( ScrW / 2, ScrH / 2, 1, Color( 255, 255, 255, 120 ) )
-
+	if ( GetConVar( "gh_cl_drawcrosshair" ):GetBool() == true ) then 
+		surface.DrawCircle( ScrW / 2, ScrH / 2, 1, Color( 255, 255, 255, 120 ) )
+	end 
+	
     -- Draw the HUD box :D
     draw.RoundedBox( 8, 30, ( ScrH - ScrH ) + 18, 250, 110, Color( 20, 20, 20, 180 ) )
     
@@ -75,7 +83,14 @@ function GM:HUDPaint()
 	if ( STAMINA ) then 
 		-- Draw the stamina bar with it's background 
 		draw.RoundedBox( 4, 40, ( ScrH - ScrH ) + 50, 230, 9, Color( 20, 20, 20, 255 ) )
-		if ( STAMINA > 2 ) then draw.RoundedBox( 4, 40, ( ScrH - ScrH ) + 50, STAMINA * 2.3, 9, Color( 120, 240, 60, GLOW ) ) end 
+		
+		if ( STAMINA > 2 ) then
+			if ( GetConVar( "gh_cl_staminaflash" ):GetBool() == true ) then 
+				draw.RoundedBox( 4, 40, ( ScrH - ScrH ) + 50, STAMINA * 2.3, 9, Color( 120, 240, 60, GLOW ) )
+			else 
+				draw.RoundedBox( 4, 40, ( ScrH - ScrH ) + 50, STAMINA * 2.3, 9, Color( 120, 240, 60, 255 ) )
+			end 
+		end 
 	end 
 
     -- Draw the player's name and team

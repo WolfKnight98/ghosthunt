@@ -3,6 +3,7 @@
     GhostHunt
     Made By: WolfKnight
     shared.lua
+	The Wolf of All Streets sends his regards. 
     
 ---------------------------------------------------------------------------*/
 
@@ -24,11 +25,6 @@ PLAYER = FindMetaTable( "Player" )
 TEAM_HUNTERS = 1
 team.SetUp( TEAM_HUNTERS, "Hunters", Color( 255, 255, 255, 255 ) )
 
--- The names of all the ghost detector entities as of right now
--- gm_ghosthunt_2 & 3 = detector_physical
--- gm_paranormal = ghost_detector
-GHOST_DETECTORS = { "detector_physical", "ghost_detector" }
-
 --
 -- make fonts n shit 
 -- 
@@ -37,6 +33,8 @@ function GM:Initialize()
 	
 	if ( CLIENT ) then 
 		surface.CreateFont( "GH_HudLabel", { font = "Coolvetica", size = 20, weight = 0, antialias = true, shadow = false } )
+		surface.CreateFont( "GH_PanelTitle", { font = "Coolvetica", size = 48, weight = 0, antialias = true, shadow = false } )
+		surface.CreateFont( "GH_PanelText", { font = "Arial", size = 18, weight = 0, antialias = true, shadow = false } )
 	end
 end
 

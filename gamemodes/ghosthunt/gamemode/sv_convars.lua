@@ -7,12 +7,12 @@
 ---------------------------------------------------------------------------*/
 
 -- ConVar Settings
-CreateConVar( "gh_flashlight", "1", 256, "Toggles player's flashlight on or off.\n0 = off, 1 = on" )
-CreateConVar( "gh_walkspeed", "120", 256, "Set the player's walkspeed." )
-CreateConVar( "gh_runspeed", "210", 256, "Set the player's runspeed." )
-CreateConVar( "gh_pvpdamage", "0", 256, "Allow player vs player damage.\n0 = no, 1 = yes" )
-CreateConVar( "gh_stamina", "1", 256, "Toggles the stamina system.\n0 = off, 1 = on" )
-CreateConVar( "gh_allowgravpunt", "0", 256, "Allow people to shoot props with the gravity gun.\n0 = no, 1 = yes" )
+CreateConVar( "gh_flashlight", "1", { FCVAR_REPLICATED, FCVAR_NOTIFY }, "Toggles player's flashlight on or off.\n0 = off, 1 = on" )
+CreateConVar( "gh_walkspeed", "120", { FCVAR_REPLICATED, FCVAR_NOTIFY }, "Set the player's walkspeed." )
+CreateConVar( "gh_runspeed", "210", { FCVAR_REPLICATED, FCVAR_NOTIFY }, "Set the player's runspeed." )
+CreateConVar( "gh_pvpdamage", "0", { FCVAR_REPLICATED, FCVAR_NOTIFY }, "Allow player vs player damage.\n0 = no, 1 = yes" )
+CreateConVar( "gh_stamina", "1", { FCVAR_REPLICATED, FCVAR_NOTIFY }, "Toggles the stamina system.\n0 = off, 1 = on" )
+CreateConVar( "gh_allowgravpunt", "0", { FCVAR_REPLICATED, FCVAR_NOTIFY }, "Allow people to shoot props with the gravity gun.\n0 = no, 1 = yes" )
 
 cvars.AddChangeCallback( "gh_flashlight", function( convar_name, value_old, value_new ) 
 	if ( tonumber(value_new, 10) > 1 ) then GetConVar( "gh_flashlight" ):SetBool( true ) end 
