@@ -1,6 +1,9 @@
 -- gm_ghosthunt_2 config file for GhostHunt
 -- Written by [AL] WolfKnight
 
+GAMEMODE.MapName = "gm_ghosthunt_2"
+GAMEMODE.MapAuthor = "Breadman"
+
 GAMEMODE.GhostDetector = "detector_physical"
 
 GAMEMODE.BuildUpSprites = 

@@ -1,6 +1,9 @@
 -- gm_paranormal config file for GhostHunt
 -- Written by [AL] WolfKnight
 
+GAMEMODE.MapName = "gm_paranormal"
+GAMEMODE.MapAuthor = "Steinman"
+
 GAMEMODE.GhostDetector = "ghost_detector"
 
 GAMEMODE.BuildUpSprites = 

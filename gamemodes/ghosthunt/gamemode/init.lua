@@ -8,7 +8,9 @@
 
 util.AddNetworkString( "sanity_effect" )
 util.AddNetworkString( "has_detector" )
+util.AddNetworkString( "show_help" )
 
+AddCSLuaFile( "cl_panels.lua" )
 AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "shared.lua" )
  
@@ -19,7 +21,7 @@ include( "sv_detector.lua" )
 
 
 --
---
+-- Loads the map config if we're on aa supported map 
 --
 hook.Add( "Initialize", "MapConfigLoad", function()
 	local map = game.GetMap()
@@ -193,3 +195,14 @@ function GM:AcceptInput( ent, inp, act, cal, value )
 		end 
 	end
 end 
+
+--
+--  These functions display the derma panels when F1, F2, F3 or F4 are pressed
+--
+function GM:ShowHelp( ply )
+    net.Start( "show_help" )
+	net.Send( ply )
+end
+
+function GM:ShowTeam( ply )
+end

@@ -7,6 +7,7 @@
 ---------------------------------------------------------------------------*/
 
 include( "shared.lua" )
+include( "cl_panels.lua" )
 
 local DrawHasDetector = false 
 local smoothHealth = 100
