@@ -53,14 +53,16 @@ function HelpPanel()
 	
 	--
 	-- Help section
-	--[[
+	--
 	local help_panel = vgui.Create( "DPanel", sheet )
 	help_panel:Dock( FILL )
 	help_panel.Paint = function()
 		surface.SetDrawColor( Color( FrameColor.r+20, FrameColor.g+20, FrameColor.b+20 ) )
         surface.DrawRect( 0, 0, help_panel:GetWide(), help_panel:GetTall() )
 	end 
-	sheet:AddSheet( "Basic Help", help_panel, "icon16/user.png", false, false, "Basic help and tips." ) ]]--
+	
+	
+	sheet:AddSheet( "Basic Help", help_panel, "icon16/user.png", false, false, "Basic help and tips." )
 	
 	
 	--

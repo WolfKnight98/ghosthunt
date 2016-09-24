@@ -5,7 +5,7 @@ SWEP.Instructions	       = "Use secondary attack to zoom in and zoom out."
 
 SWEP.HoldType		       = "rpg"
 
-SWEP.ViewModel		       = ""
+SWEP.ViewModel		       = "models/weapons/c_arms_animations.mdl"
 SWEP.WorldModel	    	   = "models/weapons/w_camera.mdl"
 
 SWEP.Primary.ClipSize      = -1

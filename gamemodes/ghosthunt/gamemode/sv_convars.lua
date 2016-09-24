@@ -19,8 +19,7 @@ cvars.AddChangeCallback( "gh_flashlight", function( convar_name, value_old, valu
 	if ( tonumber(value_new, 10) < 0 ) then GetConVar( "gh_flashlight" ):SetBool( false ) end 
 
     for k, v in pairs( player.GetAll() ) do
-        if value_new == "1" then v:AllowFlashlight( true )    
-        elseif value_new == "0" then v:AllowFlashlight( false ) end
+		v:AllowFlashlight( value_new )
 end end )
 
 cvars.AddChangeCallback( "gh_walkspeed", function( convar_name, value_old, value_new ) 
