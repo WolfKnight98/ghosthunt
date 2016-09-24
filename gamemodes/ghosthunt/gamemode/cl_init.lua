@@ -13,6 +13,7 @@ GM.DrawCrosshair = CreateClientConVar( "gh_cl_drawcrosshair", "0", true, false )
 GM.DrawVignette = CreateClientConVar( "gh_cl_drawvignette", "1", true, false )
 GM.ShouldStaminaFlash = CreateClientConVar( "gh_cl_staminaflash", "1", true, false )
 GM.BetaHud = CreateClientConVar( "gh_cl_betahud", "0", true, false )
+GM.SanityEffectAllowed = CreateClientConVar( "gh_cl_sanityeffect", "1", true, false )
 
 local DrawHasDetector = false 
 local smoothHealth = 100
@@ -128,12 +129,14 @@ end
 -- Controls the ghostie effects 
 --
 net.Receive( "sanity_effect", function()		
-	if ( timer.Exists( "StopSanityEffect" ) ) then return end
-	
-	hook.Add( "RenderScreenspaceEffects", "SanityEffect", DrawSanityEffect )
-	timer.Create( "StopSanityEffect", 10, 1, function()
-		hook.Remove( "RenderScreenspaceEffects", "SanityEffect" )
-	end )
+	if ( GAMEMODE.SanityEffectAllowed:GetBool() == true ) then 
+		if ( timer.Exists( "StopSanityEffect" ) ) then return end
+		
+		hook.Add( "RenderScreenspaceEffects", "SanityEffect", DrawSanityEffect )
+		timer.Create( "StopSanityEffect", 10, 1, function()
+			hook.Remove( "RenderScreenspaceEffects", "SanityEffect" )
+		end )
+	end
 end )
 
 --

@@ -4,8 +4,55 @@
 	"title"		"GhostHunt"
 	"maps"		"^gh_"
 	"menusystem"	"1"
+	"workshopid"    "765496484"
 	"settings"
 	{
+		1
+		{
+			"name"		"gh_flashlight"
+			"text"		"Allow Flashlight"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
 
+		2
+		{
+			"name"		"gh_walkspeed"
+			"text"		"Player Walkspeed"
+			"type"		"Numeric"
+			"default"	"120"
+		}
+
+		3
+		{
+			"name"		"gh_runspeed"
+			"text"		"Player Runspeed"
+			"type"		"Numeric"
+			"default"	"210"
+		}
+
+		4
+		{
+			"name"		"gh_pvpdamage"
+			"text"		"Allow PVP Damage"
+			"type"		"CheckBox"
+			"default"	"0"
+		}
+
+		5
+		{
+			"name"		"gh_stamina"
+			"text"		"Allow Stamina"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+		6
+		{
+			"name"		"gh_allowgravpunt"
+			"text"		"Allow Gravgun Punt"
+			"type"		"CheckBox"
+			"default"	"0"
+		}
 	}
 }

@@ -52,14 +52,14 @@ function HelpPanel()
 	
 	--
 	-- Help section
-	--
+	--[[
 	local help_panel = vgui.Create( "DPanel", sheet )
 	help_panel:Dock( FILL )
 	help_panel.Paint = function()
 		surface.SetDrawColor( Color( FrameColor.r+20, FrameColor.g+20, FrameColor.b+20 ) )
         surface.DrawRect( 0, 0, help_panel:GetWide(), help_panel:GetTall() )
 	end 
-	sheet:AddSheet( "Basic Help", help_panel, "icon16/user.png", false, false, "Basic help and tips." )
+	sheet:AddSheet( "Basic Help", help_panel, "icon16/user.png", false, false, "Basic help and tips." ) ]]--
 	
 	
 	--
@@ -92,6 +92,12 @@ function HelpPanel()
 	draw_stam_flash:SetConVar( "gh_cl_staminaflash" )
 	cl_settings_panel:AddItem( draw_stam_flash )
 	
+	local draw_sanity_effect = vgui.Create( "DCheckBoxLabel", cl_settings_panel )
+	draw_sanity_effect:SetText( "Enable the sanity system?" )
+	draw_sanity_effect:SetValue( GAMEMODE.SanityEffectAllowed:GetInt() )
+	draw_sanity_effect:SetConVar( "gh_cl_sanityeffect" )
+	cl_settings_panel:AddItem( draw_sanity_effect )
+	
 	local beta_hud = vgui.Create( "DCheckBoxLabel", cl_settings_panel )
 	beta_hud:SetText( "Try the new beta hud (WARNING: EXPERIMENTAL)" )
 	beta_hud:SetValue( GAMEMODE.BetaHud:GetInt() )
@@ -107,10 +113,53 @@ function HelpPanel()
 	if ( LocalPlayer():IsAdmin() ) then 
 		local sv_settings_panel = vgui.Create( "DPanelList", sheet )
 		sv_settings_panel:Dock( FILL )
+		sv_settings_panel:SetPadding( 20 )
+		sv_settings_panel:SetSpacing( 10 )
 		sv_settings_panel.Paint = function()
 			surface.SetDrawColor( Color( FrameColor.r+20, FrameColor.g+20, FrameColor.b+20 ) )
 			surface.DrawRect( 0, 0, sv_settings_panel:GetWide(), sv_settings_panel:GetTall() )
 		end 
+		
+		local flash = vgui.Create( "DCheckBoxLabel", sv_settings_panel )
+		flash:SetText( "Allow flashlights." )
+		flash:SetValue( GetConVar( "gh_flashlight" ):GetInt() )
+		flash:SetConVar( "gh_flashlight" )
+		sv_settings_panel:AddItem( flash )
+		
+		local pvpdam = vgui.Create( "DCheckBoxLabel", sv_settings_panel )
+		pvpdam:SetText( "Allow player vs. player damage?" )
+		pvpdam:SetValue( GetConVar( "gh_pvpdamage" ):GetInt() )
+		pvpdam:SetConVar( "gh_pvpdamage" )
+		sv_settings_panel:AddItem( pvpdam )
+		
+		local stam = vgui.Create( "DCheckBoxLabel", sv_settings_panel )
+		stam:SetText( "Enable the stamina system?" )
+		stam:SetValue( GetConVar( "gh_stamina" ):GetInt() )
+		stam:SetConVar( "gh_stamina" )
+		sv_settings_panel:AddItem( stam )
+		
+		local punt = vgui.Create( "DCheckBoxLabel", sv_settings_panel )
+		punt:SetText( "Allow players to shoot props with the gravity gun?" )
+		punt:SetValue( GetConVar( "gh_allowgravpunt" ):GetInt() )
+		punt:SetConVar( "gh_allowgravpunt" )
+		sv_settings_panel:AddItem( punt )
+		
+		local walkspeed = vgui.Create( "DNumSlider", sv_settings_panel )
+		walkspeed:SetText( "Set the global player's walkspeed." )
+		walkspeed:SetMin( 10 )
+		walkspeed:SetMax( 300 )
+		walkspeed:SetValue( GetConVar( "gh_walkspeed" ):GetInt() )
+		walkspeed:SetConVar( "gh_walkspeed" )
+		sv_settings_panel:AddItem( walkspeed )
+		
+		local runspeed = vgui.Create( "DNumSlider", sv_settings_panel )
+		runspeed:SetText( "Set the global player's runspeed." )
+		runspeed:SetMin( 120 )
+		runspeed:SetMax( 600 )
+		runspeed:SetValue( GetConVar( "gh_runspeed" ):GetInt() )
+		runspeed:SetConVar( "gh_runspeed" )
+		sv_settings_panel:AddItem( runspeed )
+		
 		sheet:AddSheet( "Server Settings", sv_settings_panel, "icon16/cog.png", false, false, "Server settings." )
 	end 
 	
