@@ -165,7 +165,6 @@ function HelpPanel()
 		playerlist:SetValue( "Select a player" )
 		for k, v in ipairs( player.GetAll() ) do playerlist:AddChoice( v:GetName() ) end 
 		playerlist.OnSelect = function( panel, index, value )
-			print( value .." was selected!" )
 			for k, v in ipairs( player.GetAll() ) do 
 				if ( v:GetName() == value ) then pl = v end 
 			end 
@@ -176,9 +175,11 @@ function HelpPanel()
 		weaponlist:SetValue( "Select a weapon" )
 		for k, v in ipairs( weapons.GetList() ) do weaponlist:AddChoice( v.ClassName ) end 
 		weaponlist.OnSelect = function( panel, index, value )
-			print( value .." was selected!" )
 			wep = value
-			net.Start( "spawn_wep" ) net.WriteEntity( pl ) net.WriteString( wep ) net.SendToServer()
+			net.Start( "spawn_wep" ) 
+				net.WriteEntity( pl ) 
+				net.WriteString( wep ) 
+			net.SendToServer()
 		end
 		sv_settings_panel:AddItem( weaponlist )
 		
