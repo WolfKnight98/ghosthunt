@@ -9,6 +9,7 @@
 util.AddNetworkString( "sanity_effect" )
 util.AddNetworkString( "has_detector" )
 util.AddNetworkString( "show_help" )
+util.AddNetworkString( "spawn_wep" )
 
 AddCSLuaFile( "cl_panels.lua" )
 AddCSLuaFile( "cl_init.lua" )
@@ -59,7 +60,7 @@ end
 --
 -- Runs every time a player respawns 
 --
-function GM:PlayerSpawn( ply ) 
+function GM:PlayerSpawn( ply ) 		
     if ply:Team() == 1 then
         local gh_flashlight = GetConVar( "gh_flashlight" )
 		local walkspeed = GetConVar( "gh_walkspeed" )
@@ -206,3 +207,13 @@ end
 
 function GM:ShowTeam( ply )
 end
+
+--
+--
+--
+net.Receive( "spawn_wep", function()
+	local ply = net.ReadEntity()
+	local wep = net.ReadString()
+	
+	ply:Give( wep )
+end )

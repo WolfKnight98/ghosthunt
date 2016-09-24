@@ -6,7 +6,8 @@
     
 ---------------------------------------------------------------------------*/
 
-local FrameColor = Color( 55, 15, 15, 255 )
+local FrameColor = Color( 55, 15, 15, 155 )
+local wep, pl
 
 net.Receive( "show_help", function()
     HelpPanel()
@@ -32,18 +33,18 @@ function HelpPanel()
 	local sheet = vgui.Create( "DPropertySheet", frame )
 	sheet:Dock( FILL )
 	sheet.Paint = function()
-		--surface.SetDrawColor( Color( FrameColor.r+60, FrameColor.g+60, FrameColor.b+60 ) )
-        --surface.DrawRect( 0, 0, sheet:GetWide(), sheet:GetTall() )
-		for k, v in pairs(sheet.Items) do
-			if (!v.Tab) then continue end
+		surface.SetDrawColor( Color( FrameColor.r+20, FrameColor.g+20, FrameColor.b+20 ) )
+        surface.DrawRect( 0, 20, sheet:GetWide(), sheet:GetTall() )
+		for k, v in pairs( sheet.Items ) do
+			if ( !v.Tab ) then continue end
 			
 			if ( sheet:GetActiveTab() == v.Tab ) then 
-				v.Tab.Paint = function(self,w,h)
-					draw.RoundedBox(0, 0, 0, w, h, Color( FrameColor.r+20, FrameColor.g+20, FrameColor.b+20 ) )
+				v.Tab.Paint = function( self, w, h )
+					draw.RoundedBox( 0, 0, 0, w, h, Color( FrameColor.r+20, FrameColor.g+20, FrameColor.b+20, 255 ) )
 				end
 			else
-				v.Tab.Paint = function(self,w,h)
-					draw.RoundedBox(0, 0, 0, w, h, Color( FrameColor.r+10, FrameColor.g+10, FrameColor.b+10 ) )
+				v.Tab.Paint = function( self, w, h )
+					draw.RoundedBox( 0, 0, 0, w, h, Color( FrameColor.r+10, FrameColor.g+10, FrameColor.b+10, 255 ) )
 				end
 			end 
 		end
@@ -121,7 +122,7 @@ function HelpPanel()
 		end 
 		
 		local flash = vgui.Create( "DCheckBoxLabel", sv_settings_panel )
-		flash:SetText( "Allow flashlights." )
+		flash:SetText( "Allow flashlights?" )
 		flash:SetValue( GetConVar( "gh_flashlight" ):GetInt() )
 		flash:SetConVar( "gh_flashlight" )
 		sv_settings_panel:AddItem( flash )
@@ -159,6 +160,27 @@ function HelpPanel()
 		runspeed:SetValue( GetConVar( "gh_runspeed" ):GetInt() )
 		runspeed:SetConVar( "gh_runspeed" )
 		sv_settings_panel:AddItem( runspeed )
+		
+		local playerlist = vgui.Create( "DComboBox", sv_settings_panel )
+		playerlist:SetValue( "Select a player" )
+		for k, v in ipairs( player.GetAll() ) do playerlist:AddChoice( v:GetName() ) end 
+		playerlist.OnSelect = function( panel, index, value )
+			print( value .." was selected!" )
+			for k, v in ipairs( player.GetAll() ) do 
+				if ( v:GetName() == value ) then pl = v end 
+			end 
+		end
+		sv_settings_panel:AddItem( playerlist )
+		
+		local weaponlist = vgui.Create( "DComboBox", sv_settings_panel )
+		weaponlist:SetValue( "Select a weapon" )
+		for k, v in ipairs( weapons.GetList() ) do weaponlist:AddChoice( v.ClassName ) end 
+		weaponlist.OnSelect = function( panel, index, value )
+			print( value .." was selected!" )
+			wep = value
+			net.Start( "spawn_wep" ) net.WriteEntity( pl ) net.WriteString( wep ) net.SendToServer()
+		end
+		sv_settings_panel:AddItem( weaponlist )
 		
 		sheet:AddSheet( "Server Settings", sv_settings_panel, "icon16/cog.png", false, false, "Server settings." )
 	end 
