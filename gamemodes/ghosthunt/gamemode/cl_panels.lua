@@ -127,7 +127,7 @@ function HelpPanel()
 		flash:SetText( "Allow flashlights?" )
 		flash:SetValue( GetConVar( "gh_flashlight" ):GetInt() )
 		flash:SetConVar( "gh_flashlight" )
-		sv_settings_panel:AddItem( flash )
+		sv_settings_panel:AddItem( flash ) 
 		
 		local pvpdam = vgui.Create( "DCheckBoxLabel", sv_settings_panel )
 		pvpdam:SetText( "Allow player vs. player damage?" )

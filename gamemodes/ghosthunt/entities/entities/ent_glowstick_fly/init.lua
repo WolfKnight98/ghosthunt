@@ -10,8 +10,8 @@ function ENT:Initialize()
 	self:SetSolid(SOLID_VPHYSICS)
 	local phys = self:GetPhysicsObject()
 	if phys:IsValid() then phys:Wake() end
-	if GetConVar("gmod_glowsticks_lifetime_infinite"):GetBool() == false then
-		local lifetime = GetConVar("gmod_glowsticks_lifetime"):GetFloat()
+	if GetConVar("gh_infinite_glowstick"):GetBool() == false then
+		local lifetime = GetConVar("gh_glowstick_lifetime"):GetFloat()
 		timer.Simple(lifetime, function() if self:IsValid() then self:Remove() else return end end)
 	end
 end
