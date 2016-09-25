@@ -1,7 +1,4 @@
 SWEP.Author			       = "Patrick Hunt & WolfKnight"
-SWEP.Contact		       = "http://steamcommunity.com/id/HunteR4708"
-SWEP.Purpose		       = "Record ghosties"
-SWEP.Instructions	       = "Use secondary attack to zoom in and zoom out."
 
 SWEP.HoldType		       = "rpg"
 

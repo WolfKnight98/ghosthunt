@@ -81,6 +81,7 @@ function GM:PlayerSpawn( ply )
 		ply:Give( "gh_hands" )
 		ply:Give( "gh_camera" )
 		ply:Give( "gh_medkit" )
+		ply:Give( "gh_glowstick" )
         ply:Give( "weapon_crowbar" )
         ply:Give( "weapon_physcannon" )
     end

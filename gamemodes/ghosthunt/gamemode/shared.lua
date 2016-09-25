@@ -25,6 +25,17 @@ PLAYER = FindMetaTable( "Player" )
 TEAM_HUNTERS = 1
 team.SetUp( TEAM_HUNTERS, "Hunters", Color( 255, 255, 255, 255 ) )
 
+-- Add glowstick ammo type 
+game.AddAmmoType( {
+	name = "glowsticks",
+	dmgtype = DMG_CRUSH,
+	tracer = TRACER_NONE,
+	plydmg = 0,
+	npcdmg = 0,
+	force = 0,
+	maxcarry = 5
+} )
+
 --
 -- make fonts n shit 
 -- 
