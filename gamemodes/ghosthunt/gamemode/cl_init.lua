@@ -9,12 +9,12 @@
 include( "shared.lua" )
 include( "cl_panels.lua" )
 
-GM.DrawCrosshair       = CreateClientConVar( "gh_cl_drawcrosshair", "0", true, false )
-GM.DrawVignette        = CreateClientConVar( "gh_cl_drawvignette",  "1", true, false )
-GM.ShouldStaminaFlash  = CreateClientConVar( "gh_cl_staminaflash",  "1", true, false )
-GM.BetaHud             = CreateClientConVar( "gh_cl_betahud",       "0", true, false )
-GM.SanityEffectAllowed = CreateClientConVar( "gh_cl_sanityeffect",  "1", true, false )
-GM.DrawBackgroundBlur  = CreateClientConVar( "gh_cl_drawbgblur",    "1", true, false )
+GM.DrawCrosshair       = CreateClientConVar( "gh_cl_drawcrosshair",  "0",   true, false )
+GM.DrawVignette        = CreateClientConVar( "gh_cl_drawvignette",   "1",   true, false )
+GM.ShouldStaminaFlash  = CreateClientConVar( "gh_cl_staminaflash",   "1",   true, false )
+GM.BetaHud             = CreateClientConVar( "gh_cl_betahud",        "0",   true, false )
+GM.SanityEffectAllowed = CreateClientConVar( "gh_cl_sanityeffect",   "1",   true, false )
+GM.DrawBackgroundBlur  = CreateClientConVar( "gh_cl_drawbgblur",     "1",   true, false )
 
 function ResetCVars()
 	GAMEMODE.DrawCrosshair:SetInt( 0 )
@@ -31,10 +31,10 @@ local surface = surface
 local draw = draw
 
 local DrawHasDetector = false 
-local smoothHealth = 100
+local smoothHealth = 0
 local hudY = ScrH - 70
 local healthPos = hudY + 8
-local stamPos = hudY + 30
+local stamPos = hudY + 32
 local MAT_VIGNETTE = Material( "overlays/vignette01" )
 local width 
 local height 
@@ -75,8 +75,8 @@ function GM:HUDPaint()
 	
     -- Draw the vignette effect, make's it more spoo-o-oooo-ky
 	if ( GAMEMODE.DrawVignette:GetBool() == true ) then 
+		surface.SetDrawColor( 255, 255, 255, 255 )
 		surface.SetMaterial( MAT_VIGNETTE )
-		surface.SetDrawColor( 255, 255, 255, 120 )
 		surface.DrawTexturedRect( 0, 0, ScrW, ScrH )
     end 
 	
@@ -117,19 +117,19 @@ function GM:HUDPaint()
 		draw.RoundedBox( 8, 30, hudY, 250, 50, Color( 20, 20, 20, 180 ) )
 		
 		-- Health bar 
-		draw.RoundedBox( 4, 40, healthPos, 230, 12, Color( 20, 20, 20, 255 ) )
-		draw.RoundedBox( 4, 40, healthPos, smoothHealth * 1.15, 12, Color( 145, 0, 0, 255 ) )
+		draw.RoundedBox( 4, 40, healthPos, 230, 18, Color( 20, 20, 20, 255 ) )
+		draw.RoundedBox( 4, 40, healthPos, smoothHealth * 1.15, 18, Color( 200, 0, 0, 255 ) )
 		
 		-- Stamina bar stuff 
 		if ( STAMINA ) then 
 			-- Draw the stamina bar with it's background 
-			draw.RoundedBox( 4, 40, stamPos, 230, 12, Color( 20, 20, 20, 255 ) )
+			draw.RoundedBox( 4, 40, stamPos, 230, 10, Color( 20, 20, 20, 255 ) )
 			
 			if ( STAMINA > 2 ) then
 				if ( GAMEMODE.ShouldStaminaFlash:GetBool() == true ) then 
-					draw.RoundedBox( 4, 40, stamPos, STAMINA * 2.3, 12, Color( 120, 240, 60, GLOW ) )
+					draw.RoundedBox( 4, 40, stamPos, STAMINA * 2.3, 10, Color( 75, 201, 12, GLOW ) )
 				else 
-					draw.RoundedBox( 4, 40, stamPos, STAMINA * 2.3, 12, Color( 120, 240, 60, 255 ) )
+					draw.RoundedBox( 4, 40, stamPos, STAMINA * 2.3, 10, Color( 75, 201, 12, 255 ) )
 				end 
 			end 
 		end 

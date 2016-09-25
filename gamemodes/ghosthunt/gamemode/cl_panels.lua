@@ -7,7 +7,6 @@
 ---------------------------------------------------------------------------*/
 
 local FrameColor = Color( 55, 15, 15, 155 )
-local wep, pl
 
 net.Receive( "show_help", function()
     HelpPanel()
