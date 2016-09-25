@@ -66,6 +66,7 @@ function GM:PlayerSpawn( ply )
 		local runspeed  = GetConVar( "gh_runspeed" )
 
     -- Health and armour 
+		ply:SetMaxHealth( 200 )
         ply:SetHealth( 200 )
         ply:SetArmor( 0 )
 
@@ -138,26 +139,27 @@ function GM:AllowPlayerPickup( ply )
 	end 
 	
 	-- Attach the ghost detector to the player that has used it 
-	-- if ( item:GetName() == self.GhostDetector ) then 
-		-- if ( !item.IsAttached or item.IsAttached == false ) then 
-			-- ply:ChatPrint( "You are looking at a ghost detector." )
+	if ( item:GetName() == self.GhostDetector ) then 
+		if ( !item.IsAttached or item.IsAttached == false ) then 
+			ply:ChatPrint( "You are looking at a ghost detector." )
 			
-			-- local pos = ply:GetPos()
-			-- local ang = ply:GetAngles()
+			local pos = ply:GetPos()
+			local ang = ply:GetAngles()
+			local newpos = pos + Vector( 0, 0, 40 )
 			
-			-- item:SetPos( pos + Vector( 50, 0, 50 ) )
-			-- item:SetAngles( ang )
-			-- item:SetParent( ply )
-			-- item:SetNoDraw( true )
-			-- item.IsAttached = true
-			-- item.AttachedTo = ply 
+			item:SetPos( newpos )
+			item:SetCollisionGroup( COLLISION_GROUP_WEAPON )
+			item:SetParent( ply )
+			--item:SetNoDraw( true )
+			item.IsAttached = true
+			item.AttachedTo = ply 
 			
-			-- net.Start( "has_detector" )
-			-- net.Send( ply )
+			net.Start( "has_detector" )
+			net.Send( ply )
 			
-			-- return false 
-		-- end 
-	-- end 
+			return false 
+		end 
+	end 
 	
 	return true 
 end 

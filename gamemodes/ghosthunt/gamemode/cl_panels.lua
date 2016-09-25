@@ -25,7 +25,7 @@ function HelpPanel()
 	frame:SetDraggable( false )
 
     function frame:Paint()
-        Derma_DrawBackgroundBlur( frame, startTime )
+        if ( GAMEMODE.DrawBackgroundBlur:GetBool() == true ) then Derma_DrawBackgroundBlur( frame, startTime ) end 
         surface.SetDrawColor( FrameColor )
         surface.DrawRect( 0, 0, frame:GetWide(), frame:GetTall() )
     end
@@ -114,6 +114,12 @@ function HelpPanel()
 	draw_vignette:SetConVar( "gh_cl_drawvignette" )
 	cl_settings_panel:AddItem( draw_vignette )
 	
+	local draw_bgblur = vgui.Create( "DCheckBoxLabel", cl_settings_panel )
+	draw_bgblur:SetText( "Draw background blur on this menu?" )
+	draw_bgblur:SetValue( GAMEMODE.DrawBackgroundBlur:GetInt() )
+	draw_bgblur:SetConVar( "gh_cl_drawbgblur" )
+	cl_settings_panel:AddItem( draw_bgblur )
+	
 	local draw_stam_flash = vgui.Create( "DCheckBoxLabel", cl_settings_panel )
 	draw_stam_flash:SetText( "Should the stamina bar flash?" )
 	draw_stam_flash:SetValue( GAMEMODE.ShouldStaminaFlash:GetInt() )
@@ -131,6 +137,13 @@ function HelpPanel()
 	beta_hud:SetValue( GAMEMODE.BetaHud:GetInt() )
 	beta_hud:SetConVar( "gh_cl_betahud" )
 	cl_settings_panel:AddItem( beta_hud )
+	
+	local cl_reset_button = vgui.Create( "DButton", frame )
+	cl_reset_button:SetText( "Reset to defaults" )
+	cl_reset_button.DoClick = function()
+		ResetCVars()
+	end 
+	cl_settings_panel:AddItem( cl_reset_button )
 	
 	sheet:AddSheet( "Client Settings", cl_settings_panel, "icon16/cog.png", false, false, "Clientside settings." )
 	

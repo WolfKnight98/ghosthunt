@@ -21,7 +21,7 @@ SWEP.WorldModel				= "models/glowstick/stick.mdl"
 SWEP.UseHands				= false
 
 SWEP.Primary.ClipSize		= -1
-SWEP.Primary.DefaultClip	= 25
+SWEP.Primary.DefaultClip	= 999
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "glowsticks"
 SWEP.Primary.Delay			= 2

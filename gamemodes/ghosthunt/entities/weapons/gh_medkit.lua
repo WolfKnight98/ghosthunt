@@ -15,8 +15,8 @@ SWEP.WorldModel				= Model( "models/weapons/w_medkit.mdl" )
 SWEP.ViewModelFOV			= 54
 SWEP.UseHands				= true
 
-SWEP.Primary.ClipSize		= 100
-SWEP.Primary.DefaultClip	= 100
+SWEP.Primary.ClipSize		= 200
+SWEP.Primary.DefaultClip	= 200
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "none"
 
@@ -58,7 +58,7 @@ function SWEP:PrimaryAttack()
 	local need = self.HealAmount
 	if ( IsValid( ent ) ) then need = math.min( ent:GetMaxHealth() - ent:Health(), self.HealAmount ) end
 
-	if ( IsValid( ent ) && self:Clip1() >= need && ( ent:IsPlayer() || ent:IsNPC() ) && ent:Health() < 100 ) then
+	if ( IsValid( ent ) && self:Clip1() >= need && ( ent:IsPlayer() || ent:IsNPC() ) && ent:Health() < 200 ) then
 
 		self:TakePrimaryAmmo( need )
 

@@ -11,7 +11,7 @@ GM.Name = "GhostHunt"
 GM.Author = "WolfKnight"
 GM.Email = "N/A"
 GM.Website = "N/A"
-GM.Version = "1.01"
+GM.Version = "1.03"
 
 DeriveGamemode( "base" )
 
@@ -37,7 +37,7 @@ game.AddAmmoType( {
 } )
 
 --
--- make fonts n shit 
+-- Runs when the gamemode is first loaded 
 -- 
 function GM:Initialize()
 	self.BaseClass.Initialize( self )
@@ -50,6 +50,9 @@ function GM:Initialize()
 	end
 end
 
+--
+-- Runs every time a player talks in chat 
+--
 function GM:OnPlayerChat( ply, text, teamchat, dead )
     local tab = {}
     
@@ -78,6 +81,9 @@ function GM:OnPlayerChat( ply, text, teamchat, dead )
     return true 
 end
 
+--
+-- Custom function for broadcasting messages (Hey ArmA devs, broadcast (SPOOKEH))
+--
 function broadcast( str_msg, int_repeat )
 	for i = 1, int_repeat do 
 		for k, ply in pairs( player.GetAll() ) do 

@@ -9,22 +9,35 @@
 include( "shared.lua" )
 include( "cl_panels.lua" )
 
-GM.DrawCrosshair = CreateClientConVar( "gh_cl_drawcrosshair", "0", true, false )
-GM.DrawVignette = CreateClientConVar( "gh_cl_drawvignette", "1", true, false )
-GM.ShouldStaminaFlash = CreateClientConVar( "gh_cl_staminaflash", "1", true, false )
-GM.BetaHud = CreateClientConVar( "gh_cl_betahud", "0", true, false )
-GM.SanityEffectAllowed = CreateClientConVar( "gh_cl_sanityeffect", "1", true, false )
+GM.DrawCrosshair       = CreateClientConVar( "gh_cl_drawcrosshair", "0", true, false )
+GM.DrawVignette        = CreateClientConVar( "gh_cl_drawvignette",  "1", true, false )
+GM.ShouldStaminaFlash  = CreateClientConVar( "gh_cl_staminaflash",  "1", true, false )
+GM.BetaHud             = CreateClientConVar( "gh_cl_betahud",       "0", true, false )
+GM.SanityEffectAllowed = CreateClientConVar( "gh_cl_sanityeffect",  "1", true, false )
+GM.DrawBackgroundBlur  = CreateClientConVar( "gh_cl_drawbgblur",    "1", true, false )
 
-local DrawHasDetector = false 
-local smoothHealth = 100
-local MAT_VIGNETTE = Material( "overlays/vignette01" )
-local width 
-local height 
+function ResetCVars()
+	GAMEMODE.DrawCrosshair:SetInt( 0 )
+	GAMEMODE.DrawVignette:SetInt( 1 )
+	GAMEMODE.ShouldStaminaFlash:SetInt( 1 )
+	GAMEMODE.BetaHud:SetInt( 0 )
+	GAMEMODE.SanityEffectAllowed:SetInt( 1 )
+	GAMEMODE.DrawBackgroundBlur:SetInt( 1 )
+end 
 
 local ScrH = ScrH()
 local ScrW = ScrW()
 local surface = surface
 local draw = draw
+
+local DrawHasDetector = false 
+local smoothHealth = 100
+local hudY = ScrH - 70
+local healthPos = hudY + 8
+local stamPos = hudY + 30
+local MAT_VIGNETTE = Material( "overlays/vignette01" )
+local width 
+local height 
 
 GM.ToHide = 
 {
@@ -99,8 +112,27 @@ function GM:HUDPaint()
 		-- Draw the player's name and team
 		draw.WordBox( 8, 32, ( ScrH - ScrH ) + 65, NAME, "GH_HudLabel", Color( 255, 255, 255, 0 ), Color( 255, 255, 255, 255 ) )
 		draw.SimpleText( "Ghost Hunter", "GH_HudLabel", 87, ( ScrH - ScrH ) + 107, Color( 255, 255, 255, 255 ), 1, 1 )
-	else
+	else		
+		-- Draw the main hud box
+		draw.RoundedBox( 8, 30, hudY, 250, 50, Color( 20, 20, 20, 180 ) )
 		
+		-- Health bar 
+		draw.RoundedBox( 4, 40, healthPos, 230, 12, Color( 20, 20, 20, 255 ) )
+		draw.RoundedBox( 4, 40, healthPos, smoothHealth * 1.15, 12, Color( 145, 0, 0, 255 ) )
+		
+		-- Stamina bar stuff 
+		if ( STAMINA ) then 
+			-- Draw the stamina bar with it's background 
+			draw.RoundedBox( 4, 40, stamPos, 230, 12, Color( 20, 20, 20, 255 ) )
+			
+			if ( STAMINA > 2 ) then
+				if ( GAMEMODE.ShouldStaminaFlash:GetBool() == true ) then 
+					draw.RoundedBox( 4, 40, stamPos, STAMINA * 2.3, 12, Color( 120, 240, 60, GLOW ) )
+				else 
+					draw.RoundedBox( 4, 40, stamPos, STAMINA * 2.3, 12, Color( 120, 240, 60, 255 ) )
+				end 
+			end 
+		end 
 	end 
 	
 	if ( DrawHasDetector ) then 
@@ -140,7 +172,7 @@ net.Receive( "sanity_effect", function()
 end )
 
 --
---
+-- Test for new pickup system 
 --
 net.Receive( "has_detector", function()
 	DrawHasDetector = true 
