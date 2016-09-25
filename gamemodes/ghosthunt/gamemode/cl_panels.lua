@@ -33,7 +33,7 @@ function HelpPanel()
 	local sheet = vgui.Create( "DPropertySheet", frame )
 	sheet:Dock( FILL )
 	sheet.Paint = function()
-		surface.SetDrawColor( Color( FrameColor.r+20, FrameColor.g+20, FrameColor.b+20 ) )
+		surface.SetDrawColor( Color( FrameColor.r+60, FrameColor.g+60, FrameColor.b+60 ) )
         surface.DrawRect( 0, 20, sheet:GetWide(), sheet:GetTall() )
 		for k, v in pairs( sheet.Items ) do
 			if ( !v.Tab ) then continue end
@@ -54,15 +54,34 @@ function HelpPanel()
 	--
 	-- Help section
 	--
-	local help_panel = vgui.Create( "DPanel", sheet )
+--[[local help_panel = vgui.Create( "DPanelList", sheet )
 	help_panel:Dock( FILL )
+	help_panel:SetPadding( 20 )
+	help_panel:SetSpacing( 10 )
 	help_panel.Paint = function()
 		surface.SetDrawColor( Color( FrameColor.r+20, FrameColor.g+20, FrameColor.b+20 ) )
         surface.DrawRect( 0, 0, help_panel:GetWide(), help_panel:GetTall() )
 	end 
 	
+	local title = vgui.Create( "DLabel", help_panel )
+	title:SetFont( "GH_PanelTitle" )
+	title:SetAutoStretchVertical( true )
+	title:SetText( "Welcome to GhostHunt" )
+	help_panel:AddItem( title )
 	
-	sheet:AddSheet( "Basic Help", help_panel, "icon16/user.png", false, false, "Basic help and tips." )
+	local header_one = vgui.Create( "DLabel", help_panel )
+	header_one:SetFont( "GH_PanelHeader" )
+	header_one:SetAutoStretchVertical( true )
+	header_one:SetText( "What is GhostHunt?" )
+	help_panel:AddItem( header_one )
+	
+	local para_one = vgui.Create( "DLabel" )
+	para_one:SetFont( "GH_PanelText" )
+	header_one:SetAutoStretchVertical( true )
+	para_one:SetText( "GhostHunt is a fun and simple gamemode engineered to improve immersion and interactivity when playing on horror-based maps." )
+	help_panel:AddItem( para_one )
+	
+	sheet:AddSheet( "Basic Help", help_panel, "icon16/user.png", false, false, "Basic help and tips." ) ]]
 	
 	
 	--
@@ -76,6 +95,12 @@ function HelpPanel()
 		surface.SetDrawColor( Color( FrameColor.r+20, FrameColor.g+20, FrameColor.b+20 ) )
         surface.DrawRect( 0, 0, cl_settings_panel:GetWide(), cl_settings_panel:GetTall() )
 	end 
+	
+	local title = vgui.Create( "DLabel", cl_settings_panel )
+    title:SetFont( "GH_PanelTitle" )
+    title:SetAutoStretchVertical( true )
+    title:SetText( "Clientside Settings" )
+	cl_settings_panel:AddItem( title )
 	
 	local draw_crosshair = vgui.Create( "DCheckBoxLabel", cl_settings_panel )
 	draw_crosshair:SetText( "Draw crosshair?" )
@@ -96,7 +121,7 @@ function HelpPanel()
 	cl_settings_panel:AddItem( draw_stam_flash )
 	
 	local draw_sanity_effect = vgui.Create( "DCheckBoxLabel", cl_settings_panel )
-	draw_sanity_effect:SetText( "Enable the sanity system?" )
+	draw_sanity_effect:SetText( "Enable the sanity effect?" )
 	draw_sanity_effect:SetValue( GAMEMODE.SanityEffectAllowed:GetInt() )
 	draw_sanity_effect:SetConVar( "gh_cl_sanityeffect" )
 	cl_settings_panel:AddItem( draw_sanity_effect )
@@ -123,6 +148,12 @@ function HelpPanel()
 			surface.DrawRect( 0, 0, sv_settings_panel:GetWide(), sv_settings_panel:GetTall() )
 		end 
 		
+		local title = vgui.Create( "DLabel", sv_settings_panel )
+		title:SetFont( "GH_PanelTitle" )
+		title:SetAutoStretchVertical( true )
+		title:SetText( "Serverside Settings" )
+		sv_settings_panel:AddItem( title )
+		
 		local flash = vgui.Create( "DCheckBoxLabel", sv_settings_panel )
 		flash:SetText( "Allow flashlights?" )
 		flash:SetValue( GetConVar( "gh_flashlight" ):GetInt() )
@@ -147,6 +178,20 @@ function HelpPanel()
 		punt:SetConVar( "gh_allowgravpunt" )
 		sv_settings_panel:AddItem( punt )
 		
+		local infgsticks = vgui.Create( "DCheckBoxLabel", sv_settings_panel )
+		infgsticks:SetText( "Should glowsticks stay lit forever?" )
+		infgsticks:SetValue( GetConVar( "gh_infinite_glowstick" ):GetInt() )
+		infgsticks:SetConVar( "gh_infinite_glowstick" )
+		sv_settings_panel:AddItem( infgsticks )
+		
+		local gsticklife = vgui.Create( "DNumSlider", sv_settings_panel )
+		gsticklife:SetText( "Set the lifetime of glowsticks." )
+		gsticklife:SetMin( 1 )
+		gsticklife:SetMax( 300 )
+		gsticklife:SetValue( GetConVar( "gh_glowstick_lifetime" ):GetInt() )
+		gsticklife:SetConVar( "gh_glowstick_lifetime" )
+		sv_settings_panel:AddItem( gsticklife )
+		
 		local walkspeed = vgui.Create( "DNumSlider", sv_settings_panel )
 		walkspeed:SetText( "Set the global player's walkspeed." )
 		walkspeed:SetMin( 10 )
@@ -163,27 +208,27 @@ function HelpPanel()
 		runspeed:SetConVar( "gh_runspeed" )
 		sv_settings_panel:AddItem( runspeed )
 		
-		local playerlist = vgui.Create( "DComboBox", sv_settings_panel )
-		playerlist:SetValue( "Select a player" )
-		for k, v in ipairs( player.GetAll() ) do playerlist:AddChoice( v:GetName() ) end 
-		playerlist.OnSelect = function( panel, index, value )
-			for k, v in ipairs( player.GetAll() ) do 
-				if ( v:GetName() == value ) then pl = v end 
-			end 
-		end
-		sv_settings_panel:AddItem( playerlist )
+		-- local playerlist = vgui.Create( "DComboBox", sv_settings_panel )
+		-- playerlist:SetValue( "Select a player" )
+		-- for k, v in ipairs( player.GetAll() ) do playerlist:AddChoice( v:GetName() ) end 
+		-- playerlist.OnSelect = function( panel, index, value )
+			-- for k, v in ipairs( player.GetAll() ) do 
+				-- if ( v:GetName() == value ) then pl = v end 
+			-- end 
+		-- end
+		-- sv_settings_panel:AddItem( playerlist )
 		
-		local weaponlist = vgui.Create( "DComboBox", sv_settings_panel )
-		weaponlist:SetValue( "Select a weapon" )
-		for k, v in ipairs( weapons.GetList() ) do weaponlist:AddChoice( v.ClassName ) end 
-		weaponlist.OnSelect = function( panel, index, value )
-			wep = value
-			net.Start( "spawn_wep" ) 
-				net.WriteEntity( pl ) 
-				net.WriteString( wep ) 
-			net.SendToServer()
-		end
-		sv_settings_panel:AddItem( weaponlist )
+		-- local weaponlist = vgui.Create( "DComboBox", sv_settings_panel )
+		-- weaponlist:SetValue( "Select a weapon" )
+		-- for k, v in ipairs( weapons.GetList() ) do weaponlist:AddChoice( v.ClassName ) end 
+		-- weaponlist.OnSelect = function( panel, index, value )
+			-- wep = value
+			-- net.Start( "spawn_wep" ) 
+				-- net.WriteEntity( pl ) 
+				-- net.WriteString( wep ) 
+			-- net.SendToServer()
+		-- end
+		-- sv_settings_panel:AddItem( weaponlist )
 		
 		sheet:AddSheet( "Server Settings", sv_settings_panel, "icon16/cog.png", false, false, "Server settings." )
 	end 

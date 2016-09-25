@@ -45,7 +45,8 @@ function GM:Initialize()
 	if ( CLIENT ) then 
 		surface.CreateFont( "GH_HudLabel", { font = "Coolvetica", size = 20, weight = 0, antialias = true, shadow = false } )
 		surface.CreateFont( "GH_PanelTitle", { font = "Coolvetica", size = 48, weight = 0, antialias = true, shadow = false } )
-		surface.CreateFont( "GH_PanelText", { font = "Arial", size = 18, weight = 0, antialias = true, shadow = false } )
+		surface.CreateFont( "GH_PanelHeader", { font = "Roboto", size = 22, antialias = true } )
+		surface.CreateFont( "GH_PanelText", { font = "Trebuchet", size = 18, antialias = true } )
 	end
 end
 

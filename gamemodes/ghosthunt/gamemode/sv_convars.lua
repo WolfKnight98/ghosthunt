@@ -21,7 +21,8 @@ cvars.AddChangeCallback( "gh_flashlight", function( convar_name, value_old, valu
 	if ( tonumber(value_new, 10) < 0 ) then GetConVar( "gh_flashlight" ):SetBool( false ) end 
 	
 	for k, v in pairs( player.GetAll() ) do 
-		v:AllowFlashlight( value_new:GetBool() )
+		if value_new == "1" then v:AllowFlashlight( true )    
+        elseif value_new == "0" then v:AllowFlashlight( false ) end
 	end 
 end )
 
@@ -48,4 +49,9 @@ end )
 cvars.AddChangeCallback( "gh_allowgravpunt", function( convar_name, value_old, value_new )
 	if ( tonumber(value_new, 10) > 1 ) then GetConVar( "gh_allowgravpunt" ):SetBool( true ) end 
 	if ( tonumber(value_new, 10) < 0 ) then GetConVar( "gh_allowgravpunt" ):SetBool( false ) end 
+end )
+
+cvars.AddChangeCallback( "gh_infinite_glowstick", function( convar_name, value_old, value_new )
+	if ( tonumber(value_new, 10) > 1 ) then GetConVar( "gh_infinite_glowstick" ):SetBool( true ) end 
+	if ( tonumber(value_new, 10) < 0 ) then GetConVar( "gh_infinite_glowstick" ):SetBool( false ) end 
 end )

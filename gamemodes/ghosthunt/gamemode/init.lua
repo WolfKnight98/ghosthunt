@@ -9,7 +9,6 @@
 util.AddNetworkString( "sanity_effect" )
 util.AddNetworkString( "has_detector" )
 util.AddNetworkString( "show_help" )
-util.AddNetworkString( "spawn_wep" )
 
 AddCSLuaFile( "cl_panels.lua" )
 AddCSLuaFile( "cl_init.lua" )
@@ -205,16 +204,3 @@ function GM:ShowHelp( ply )
     net.Start( "show_help" )
 	net.Send( ply )
 end
-
-function GM:ShowTeam( ply )
-end
-
---
---
---
-net.Receive( "spawn_wep", function()
-	local ply = net.ReadEntity()
-	local wep = net.ReadString()
-	
-	ply:Give( wep )
-end )
