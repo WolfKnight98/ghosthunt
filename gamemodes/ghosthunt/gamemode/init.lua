@@ -207,3 +207,17 @@ function GM:ShowHelp( ply )
     net.Start( "show_help" )
 	net.Send( ply )
 end
+
+--
+--
+--
+function GM:PlayerSay( ply, text, team )
+	if ( string.sub( text, 1, 7 ) == "!getpos" ) then 
+		local ent = ply:GetEyeTrace().Entity
+		
+		if ( IsValid( ent ) ) then 
+			local pos = ent:GetPos()
+			ply:ChatPrint( pos.x .. " " .. pos.y .. " " .. pos.z )
+		end 
+	end 
+end 
