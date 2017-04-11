@@ -209,10 +209,10 @@ function GM:ShowHelp( ply )
 end
 
 --
---
+-- Finds the position of the current entity the player is looking at 
 --
 function GM:PlayerSay( ply, text, team )
-	if ( string.sub( text, 1, 7 ) == "!getpos" ) then 
+	if ( string.sub( text, 1, 7 ) == "!pos" ) then 
 		local ent = ply:GetEyeTrace().Entity
 		
 		if ( IsValid( ent ) ) then 
